@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 env:
-  AWS_REGION: AWS_REGION
+  AWS_REGION: us-west-2
   ECR_REGISTRY: 720076871190.dkr.ecr.us-west-2.amazonaws.com
   ECR_REPOSITORY: the-path
   ECS_SERVICE: the-path-dev-ECSService-A6eCMKg14Q2W
