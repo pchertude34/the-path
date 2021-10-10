@@ -85,7 +85,7 @@ jobs:
           name: the-path-dev
           template: template.yml
           parameter-overrides: >-
-            ContainerDefaultImage=$ECR_REGISTRY/ECR_REPOSITORY:$IMAGE_TAG,
+            ContainerDefaultImage="${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ github.sha }}",
             Environment="dev"
       # - name: Fill in the new image ID in the Amazon ECS task definition
       #   id: task-def
