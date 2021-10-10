@@ -1,0 +1,194 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: The Path
+
+Parameters:
+  ContainerDefaultImage:
+    Type: String
+    Default: 720076871190.dkr.ecr.us-west-2.amazonaws.com/the-path:latest
+  Environment:
+    Type: String
+    Default: dev
+    AllowedValues:
+      - dev
+      - prod
+  VpcId:
+    Type: AWS::EC2::VPC::Id
+    Default: vpc-01ddcd882610d58c3
+
+Mappings:
+  Environment:
+    dev:
+      ELBSSLDomain: takehepath.org
+    prod:
+      ELBSSLDomain: takehepath.org
+  Vpc:
+    vpc-01ddcd882610d58c3:
+      PublicSubnets:
+        - subnet-061fabb1d7efd0982
+        - subnet-0f66751af0d7ecf2d
+        - subnet-06befa9f16230bb04
+        - subnet-0034dae882e63d71d
+Resources:
+  LoadBalancer:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      Scheme: internet-facing
+      SecurityGroups:
+        - !Ref ELBSecurityGroup
+      Subnets: !FindInMap [Vpc, !Ref VpcId, PublicSubnets]
+      Type: application
+
+  ELBSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: !Sub the-path-${Environment}
+      SecurityGroupIngress:
+        - CidrIp: 0.0.0.0/0
+          FromPort: 443
+          ToPort: 443
+          IpProtocol: tcp
+        - CidrIp: 0.0.0.0/0
+          FromPort: 80
+          ToPort: 80
+          IpProtocol: tcp
+      VpcId: !Ref VpcId
+
+  ELBSSLCertificate:
+    Type: AWS::CertificateManager::Certificate
+    Properties:
+      DomainName: !FindInMap [Environment, !Ref Environment, ELBSSLDomain]
+      SubjectAlternativeNames:
+        - !Sub
+          - '*.${Domain}'
+          - Domain: !FindInMap [Environment, !Ref Environment, ELBSSLDomain]
+      ValidationMethod: DNS
+
+  ECSSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: !Sub the-path-${Environment}
+      SecurityGroupIngress:
+        - SourceSecurityGroupId: !Ref ELBSecurityGroup
+          IpProtocol: -1
+      VpcId: !Ref VpcId
+
+  PublicHTTPListener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      DefaultActions:
+        - Type: redirect
+          RedirectConfig:
+            Protocol: HTTPS
+            Port: 443
+            Host: '#{host}'
+            Path: '/#{path}'
+            Query: '#{query}'
+            StatusCode: HTTP_302
+      LoadBalancerArn: !Ref LoadBalancer
+      Port: 80
+      Protocol: HTTP
+
+  PublicHTTPSListener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      Certificates:
+        - CertificateArn: !Ref ELBSSLCertificate
+      DefaultActions:
+        - Type: forward
+          TargetGroupArn: !Ref PublicTargetGroup
+      LoadBalancerArn: !Ref LoadBalancer
+      Port: 443
+      Protocol: HTTPS
+
+  PublicTargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      HealthCheckPath: '/api/health'
+      Matcher:
+        HttpCode: 200
+      Port: 3000
+      Protocol: HTTP
+      VpcId: !Ref VpcId
+      TargetType: ip
+
+  ECSService:
+    Type: AWS::ECS::Service
+    DependsOn:
+      - PublicHTTPSListener
+    Properties:
+      Cluster: the-path
+      DeploymentConfiguration:
+        MaximumPercent: 200
+        MinimumHealthyPercent: 100
+      DesiredCount: 2
+      LaunchType: 'FARGATE'
+      LoadBalancers:
+        - ContainerName: !Sub the-path-${Environment}
+          ContainerPort: 3000
+          TargetGroupArn: !Ref PublicTargetGroup
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: ENABLED
+          SecurityGroups:
+            - !Ref ECSSecurityGroup
+          Subnets: !FindInMap [Vpc, !Ref VpcId, PublicSubnets]
+      TaskDefinition: !Ref ECSTaskDefinition
+
+  ECSTaskDefinition:
+    Type: AWS::ECS::TaskDefinition
+    # DependsOn:
+    #   - ECSTaskRole
+    Properties:
+      RequiresCompatibilities:
+        - FARGATE
+      ExecutionRoleArn: !Sub arn:aws:iam::${AWS::AccountId}:role/ecsTaskExecutionRole
+      NetworkMode: awsvpc
+      Cpu: 256
+      Memory: 512
+      Family: !Sub the-path-${Environment}
+      ContainerDefinitions:
+        - Environment:
+            - Name: ENVIRONEMNT
+              Value: !Ref Environment
+            - Name: NODE_ENV
+              Value: production
+          Essential: true
+          Image: !Ref ContainerDefaultImage
+          Name: !Sub the-path-${Environment}
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-group: !Ref ECSTaskLogs
+              awslogs-region: !Ref AWS::Region
+              awslogs-stream-prefix: !Ref ECSTaskLogs
+          PortMappings:
+            - ContainerPort: 3000
+      # TaskRoleArn: !Sub /the-path-${Environment}
+
+  ECSTaskLogs:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub /the-path-${Environment}
+      RetentionInDays: 30
+
+  # ECSTaskRole:
+  #   Type: AWS::IAM::Role
+  #   Properties:
+  #     AssumeRolePolicyDocument:
+  #       Version: '2012-10-17'
+  #       Statement:
+  #         - Effect: Allow
+  #           Principal:
+  #             Service:
+  #               - ecs-tasks.amazonaws.com
+  #           Action: sts:AssumeRole
+  #       Path: /
+  #       Policies:
+  #         - PolicyName: secretsmanager-access
+  #           PolicyDocument:
+  #             Version: '2012-10-17'
+  #             Statement:
+  #               - Effect: Allow
+  #                 Action:
+  #                   - secretsmanager:GetSecretValue
+  #                 Resource: !Sub arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:the-path/${Environment}*
