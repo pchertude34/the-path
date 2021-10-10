@@ -39,7 +39,7 @@ jobs:
 
   push_to_docker:
     runs-on: ubuntu-latest
-    needs: [build-test]
+    needs: [build_test]
 
     steps:
       - name: checkout rep
