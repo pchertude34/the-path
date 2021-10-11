@@ -57,10 +57,10 @@ Resources:
     Type: AWS::CertificateManager::Certificate
     Properties:
       DomainName: !FindInMap [Environment, !Ref Environment, ELBSSLDomain]
-      SubjectAlternativeNames:
-        - !Sub
-          - '*.${Domain}'
-          - Domain: !FindInMap [Environment, !Ref Environment, ELBSSLDomain]
+      # SubjectAlternativeNames:
+      #   - !Sub
+      #     - '*.${Domain}'
+      #     - Domain: !FindInMap [Environment, !Ref Environment, ELBSSLDomain]
       ValidationMethod: DNS
 
   ECSSecurityGroup:
