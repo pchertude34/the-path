@@ -182,7 +182,7 @@ Resources:
               Service:
                 - ecs-tasks.amazonaws.com
             Action: sts:AssumeRole
-        Path: /
+        # Path: /
         # Policies:
         #   - PolicyName: secretsmanager-access
         #     PolicyDocument:
