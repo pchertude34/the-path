@@ -136,8 +136,8 @@ Resources:
 
   ECSTaskDefinition:
     Type: AWS::ECS::TaskDefinition
-    # DependsOn:
-    #   - ECSTaskRole
+    DependsOn:
+      - ECSTaskRole
     Properties:
       RequiresCompatibilities:
         - FARGATE
@@ -163,7 +163,7 @@ Resources:
               awslogs-stream-prefix: !Ref ECSTaskLogs
           PortMappings:
             - ContainerPort: 3000
-      # TaskRoleArn: !Sub /the-path-${Environment}
+      TaskRoleArn: !Sub /the-path-${Environment}
 
   ECSTaskLogs:
     Type: AWS::Logs::LogGroup
@@ -171,17 +171,17 @@ Resources:
       LogGroupName: !Sub /the-path-${Environment}
       RetentionInDays: 30
 
-  # ECSTaskRole:
-  #   Type: AWS::IAM::Role
-  #   Properties:
-  #     AssumeRolePolicyDocument:
-  #       Version: '2012-10-17'
-  #       Statement:
-  #         - Effect: Allow
-  #           Principal:
-  #             Service:
-  #               - ecs-tasks.amazonaws.com
-  #           Action: sts:AssumeRole
+  ECSTaskRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - ecs-tasks.amazonaws.com
+            Action: sts:AssumeRole
   #       Path: /
   #       Policies:
   #         - PolicyName: secretsmanager-access
