@@ -163,7 +163,7 @@ Resources:
               awslogs-stream-prefix: !Ref ECSTaskLogs
           PortMappings:
             - ContainerPort: 3000
-      TaskRoleArn: !Sub /the-path-${Environment}
+      TaskRoleArn: !Sub ${ECSTaskRole.Arn}
 
   ECSTaskLogs:
     Type: AWS::Logs::LogGroup
@@ -182,13 +182,13 @@ Resources:
               Service:
                 - ecs-tasks.amazonaws.com
             Action: sts:AssumeRole
-  #       Path: /
-  #       Policies:
-  #         - PolicyName: secretsmanager-access
-  #           PolicyDocument:
-  #             Version: '2012-10-17'
-  #             Statement:
-  #               - Effect: Allow
-  #                 Action:
-  #                   - secretsmanager:GetSecretValue
-  #                 Resource: !Sub arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:the-path/${Environment}*
+        Path: /
+        # Policies:
+        #   - PolicyName: secretsmanager-access
+        #     PolicyDocument:
+        #       Version: '2012-10-17'
+        #       Statement:
+        #         - Effect: Allow
+        #           Action:
+        #             - secretsmanager:GetSecretValue
+        #           Resource: !Sub arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:the-path/${Environment}*
