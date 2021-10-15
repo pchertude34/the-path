@@ -60,7 +60,7 @@ jobs:
 
   deploy_cloudformation:
     runs-on: ubuntu-latest
-    needs: [push_to_docker]
+    needs: [build_test_deploy]
 
     steps:
       - name: checkout repository
