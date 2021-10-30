@@ -29,7 +29,7 @@ export default function Hero() {
               </Text>
               <br />
               <Text as={'span'} position={'relative'} color={'primary.500'}>
-                to Thrivingggg
+                to Thriving
               </Text>
             </Heading>
             <Text fontSize={{ base: 'md', lg: 'lg' }}>
