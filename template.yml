@@ -172,7 +172,7 @@ Resources:
       RetentionInDays: 30
 
   ECSExecutionRole:
-    Type: AWS::IAM:Role
+    Type: AWS::IAM::Role
     Properties:
       AssumeRolePolicyDocument:
         Statement:
