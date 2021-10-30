@@ -1,0 +1,31 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Provider {
+  id          Int      @id @default(autoincrement())
+  name        String
+  service     String
+  undisclosed Boolean  @default(false)
+  spanish     Boolean  @default(false)
+  street      String?
+  city        String
+  state       String
+  zip         Int?
+  lat         Decimal?
+  long        Decimal?
+  website     String
+  phone       String?
+  email       String?
+  description String?
+  updatedAt   DateTime @default(now()) @map("updated_at")
+
+}
