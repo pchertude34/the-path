@@ -121,7 +121,6 @@ Resources:
         MaximumPercent: 200
         MinimumHealthyPercent: 100
       DesiredCount: 2
-      HealthCheckGracePeriod: 120
       LaunchType: 'FARGATE'
       LoadBalancers:
         - ContainerName: !Sub the-path-${Environment}
