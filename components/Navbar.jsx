@@ -61,14 +61,7 @@ export default function WithSubnavigation() {
         </Flex>
 
         <Stack flex={{ base: 1, md: 0 }} justify={'flex-end'} direction="row" spacing={6}>
-          <Button
-            as="a"
-            fontSize="sm"
-            fontWeight={400}
-            variant="link"
-            href="#"
-            colorScheme="primary"
-          >
+          <Button as="a" href="#" colorScheme="primary">
             Find Your Path
           </Button>
         </Stack>

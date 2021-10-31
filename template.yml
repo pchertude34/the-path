@@ -118,8 +118,8 @@ Resources:
     Properties:
       Cluster: the-path
       DeploymentConfiguration:
-        MaximumPercent: 200
-        MinimumHealthyPercent: 100
+        MaximumPercent: 150
+        MinimumHealthyPercent: 50
       DesiredCount: 2
       LaunchType: 'FARGATE'
       LoadBalancers:
