@@ -50,18 +50,21 @@ export default function WithSubnavigation() {
           <Text
             textAlign={useBreakpointValue({ base: 'center', md: 'left' })}
             fontFamily={'heading'}
-            // color={useColorModeValue('gray.800', 'white')}
+            fontWeight={800}
           >
             The Path
           </Text>
-
-          <Flex display={{ base: 'none', md: 'flex' }} ml={10}>
-            <DesktopNav />
-          </Flex>
         </Flex>
 
-        <Stack flex={{ base: 1, md: 0 }} justify={'flex-end'} direction="row" spacing={6}>
-          <Button as="a" href="#" colorScheme="primary">
+        <Stack
+          flex={{ base: 1, md: 0 }}
+          justify={'flex-end'}
+          alignItems="center"
+          direction="row"
+          spacing={6}
+        >
+          <DesktopNav />
+          <Button as="a" href="#" size="sm" colorScheme="primary">
             Find Your Path
           </Button>
         </Stack>
