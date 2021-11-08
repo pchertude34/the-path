@@ -1,11 +1,12 @@
 import React from 'react';
+import { Container } from '@chakra-ui/react';
 import Navbar from './Navbar';
 
 function SiteLayout({ children }) {
   return (
     <React.Fragment>
       <Navbar />
-      {children}
+      <Container maxW="7xl">{children}</Container>
     </React.Fragment>
   );
 }

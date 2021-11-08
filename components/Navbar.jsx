@@ -35,7 +35,7 @@ export default function WithSubnavigation() {
         align={'center'}
       >
         <Flex
-          flex={{ base: 1, md: 'auto' }}
+          flex={{ base: 0, md: 'auto' }}
           ml={{ base: -2 }}
           display={{ base: 'flex', md: 'none' }}
         >
@@ -46,7 +46,13 @@ export default function WithSubnavigation() {
             aria-label={'Toggle Navigation'}
           />
         </Flex>
-        <Flex flex={{ base: 1 }} justify={{ base: 'center', md: 'start' }}>
+        <Flex
+          flex={{ base: 1 }}
+          justify={{ base: 'left', md: 'start' }}
+          alignItems="center"
+          ml={{ base: 1, md: 0 }}
+          mr={{ base: 0, md: 4 }}
+        >
           <Text
             textAlign={useBreakpointValue({ base: 'center', md: 'left' })}
             fontFamily={'heading'}
@@ -54,20 +60,16 @@ export default function WithSubnavigation() {
           >
             The Path
           </Text>
-        </Flex>
 
-        <Stack
-          flex={{ base: 1, md: 0 }}
-          justify={'flex-end'}
-          alignItems="center"
-          direction="row"
-          spacing={6}
-        >
-          <DesktopNav />
-          <Button as="a" href="#" size="sm" colorScheme="primary">
+          <Flex display={{ base: 'none', md: 'flex' }} ml={'auto'}>
+            <DesktopNav />
+          </Flex>
+        </Flex>
+        <NextLink href="/find" passHref ml={5}>
+          <Button as="a" fontSize="sm" colorScheme="primary">
             Find Your Path
           </Button>
-        </Stack>
+        </NextLink>
       </Flex>
 
       <Collapse in={isOpen} animateOpacity>

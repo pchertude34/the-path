@@ -1,9 +1,8 @@
 import React from 'react';
-import type { NextPage } from 'next';
 import Head from 'next/head';
 import Hero from '../components/Hero';
 
-const Home: NextPage = () => {
+function Home() {
   return (
     <React.Fragment>
       <Head>
@@ -14,6 +13,6 @@ const Home: NextPage = () => {
       <Hero />
     </React.Fragment>
   );
-};
+}
 
 export default Home;

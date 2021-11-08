@@ -1,4 +1,5 @@
 import { ChakraProvider, CSSReset } from '@chakra-ui/react';
+import { Wrapper, Status } from '@googlemaps/react-wrapper';
 import SiteLayout from '../components/SiteLayout';
 import theme from '../chakra.theme';
 
@@ -17,11 +18,15 @@ function MyApp({ Component, pageProps }) {
     };
   }
 
+  console.log(`google.maps`, google.maps);
+
   return (
     <ChakraProvider theme={theme}>
       <CSSReset config={config} />
       <Layout>
-        <Component {...pageProps} />
+        <Wrapper apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}>
+          <Component {...pageProps} />
+        </Wrapper>
       </Layout>
     </ChakraProvider>
   );
