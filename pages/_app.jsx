@@ -22,9 +22,7 @@ function MyApp({ Component, pageProps }) {
     <ChakraProvider theme={theme}>
       <CSSReset config={config} />
       <Layout>
-        <Wrapper apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}>
-          <Component {...pageProps} />
-        </Wrapper>
+        <Component {...pageProps} />
       </Layout>
     </ChakraProvider>
   );

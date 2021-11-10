@@ -1,10 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
 import {
+  Box,
   Container,
   FormControl,
   FormLabel,
   Input,
   VStack,
+  Flex,
   Heading,
   Text,
   SimpleGrid,
@@ -12,6 +14,8 @@ import {
   Button,
   Divider,
 } from '@chakra-ui/react';
+import { ArrowForwardIcon } from '@chakra-ui/icons';
+import { MdLocationOn } from 'react-icons/md';
 import FormCard from '../components/FormCard';
 
 function Find() {
@@ -78,10 +82,14 @@ function Find() {
   return (
     <FormCard>
       <VStack w="full" h="full" p={10} spacing={{ base: 4, md: 10 }} alignItems="center">
-        <Heading as="h1" size="xl" textAlign="center">
-          Welcome to The Path!
-        </Heading>
-        <Text fontSize="lg">First things first, where are you located?</Text>
+        <Box w="full" h="full">
+          <Heading as="h1" size="xl" textAlign="center">
+            Welcome to The Path!
+          </Heading>
+          <Text fontSize="lg" textAlign="center">
+            First things first, where are you located?
+          </Text>
+        </Box>
         <Divider />
         <Container>
           <SimpleGrid columns={2} columnGap={3} rowGap={6} w="full">
@@ -112,9 +120,19 @@ function Find() {
           </SimpleGrid>
         </Container>
         <Text>Or</Text>
-        <Button colorScheme="secondary" px={8} onClick={calculateLocation}>
+        <Button
+          leftIcon={<MdLocationOn />}
+          colorScheme="secondary"
+          px={8}
+          onClick={calculateLocation}
+        >
           Use my current location
         </Button>
+        <Flex w={'100%'}>
+          <Button rightIcon={<ArrowForwardIcon />} colorScheme="primary" ml="auto">
+            Next
+          </Button>
+        </Flex>
       </VStack>
     </FormCard>
   );
