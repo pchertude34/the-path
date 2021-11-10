@@ -18,8 +18,6 @@ function MyApp({ Component, pageProps }) {
     };
   }
 
-  console.log(`google.maps`, google.maps);
-
   return (
     <ChakraProvider theme={theme}>
       <CSSReset config={config} />

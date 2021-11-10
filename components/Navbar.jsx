@@ -84,39 +84,18 @@ const DesktopNav = () => {
     <Stack direction={'row'} spacing={4}>
       {NAV_ITEMS.map((navItem) => (
         <Box key={navItem.label}>
-          <Popover trigger={'hover'} placement={'bottom-start'}>
-            <PopoverTrigger>
-              {/* Using NextLink here causes some weird behaviour with the styles of the popover */}
-              <NextLink href={navItem.href ?? '#'} passHref>
-                <Link
-                  p={2}
-                  fontSize={'sm'}
-                  href={navItem.href ?? '#'}
-                  fontWeight={500}
-                  colorScheme={'primary'}
-                >
-                  {navItem.label}
-                </Link>
-              </NextLink>
-            </PopoverTrigger>
-
-            {navItem.children && (
-              <PopoverContent
-                border={0}
-                boxShadow={'xl'}
-                bg={'primary'}
-                p={4}
-                rounded={'xl'}
-                minW={'sm'}
-              >
-                <Stack>
-                  {navItem.children.map((child) => (
-                    <DesktopSubNav key={child.label} {...child} />
-                  ))}
-                </Stack>
-              </PopoverContent>
-            )}
-          </Popover>
+          {/* Using NextLink here causes some weird behaviour with the styles of the popover */}
+          <NextLink href={navItem.href ?? '#'} passHref>
+            <Link
+              p={2}
+              fontSize={'sm'}
+              href={navItem.href ?? '#'}
+              fontWeight={500}
+              colorScheme={'primary'}
+            >
+              {navItem.label}
+            </Link>
+          </NextLink>
         </Box>
       ))}
     </Stack>
