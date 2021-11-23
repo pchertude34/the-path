@@ -2,11 +2,11 @@ import { extendTheme } from '@chakra-ui/react';
 
 const customTheme = extendTheme({
   styles: {
-    global: (props) => ({
-      body: {
-        bg: 'lightGray.100',
-      },
-    }),
+    // global: (props) => ({
+    //   body: {
+    //     bg: 'lightGray.100',
+    //   },
+    // }),
   },
   colors: {
     primary: {

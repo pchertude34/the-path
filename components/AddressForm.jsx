@@ -24,7 +24,8 @@ import FormCard from './FormCard';
  * This is a component that is to be used on the "find" page and requires
  * consumption of the pathFormContext.
  */
-function AddressForm() {
+function AddressForm(props) {
+  const { onComplete } = props;
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const {
@@ -141,6 +142,7 @@ function AddressForm() {
         });
       }
     }
+    onComplete();
 
     setIsLoading(false);
   }
