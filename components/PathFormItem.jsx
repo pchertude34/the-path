@@ -6,7 +6,7 @@ function PathFormItem(props) {
   const { title, description, children, ...rest } = props;
 
   return (
-    <VStack w="full" bg="gray.100" borderRadius="md" p={8} {...rest}>
+    <VStack w="full" bg="gray.50" borderRadius="md" p={8} {...rest}>
       <Box w="full" mb={4}>
         <Heading as="h2" size="lg">
           {title}

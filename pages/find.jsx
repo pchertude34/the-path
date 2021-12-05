@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Container } from '@chakra-ui/react';
 import { PathFormProvider } from '../state';
 import PathFormItem from '../components/PathFormItem';
@@ -18,6 +18,10 @@ function Find() {
             onLocationChange={() => {}}
           />
         </PathFormItem>
+
+        {/* <PathFormItem>
+
+        </PathFormItem> */}
       </Container>
     </PathFormProvider>
   );

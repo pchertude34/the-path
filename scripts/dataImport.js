@@ -18,32 +18,45 @@ fs.createReadStream(filePath)
     const providers = csvData.slice(1);
 
     for (let provider of providers) {
-      const rowData = {
-        id: Number(provider[0]),
-        name: provider[1],
-        service: provider[2],
-        undisclosed: provider[3] === 'FALSE' ? false : true,
-        spanish: provider[4] === 'FALSE' ? false : true,
-        street: provider[5],
-        city: provider[6],
-        state: provider[7],
-        zip: Number(provider[8]),
-        lat: Number(provider[9]),
-        long: Number(provider[10]),
-        website: provider[11],
-        phone: provider[12],
-        email: provider[13],
-        description: provider[14],
-      };
+      const services = provider[2].split(',').map((service) => service.trim());
 
       try {
-        await prisma.provider.create({
-          data: rowData,
+        const [
+          id,
+          name,
+          _,
+          undisclosed,
+          spanish,
+          street,
+          city,
+          state,
+          zip,
+          lat,
+          long,
+          website,
+          phone,
+          email,
+          description,
+        ] = provider;
+
+        const location = `ST_GeomFromText('POINT(${lat} ${long})', 4326)`;
+
+        var query1 = `INSERT INTO \`the-path\`.Provider VALUES (${id}, "${name}", ${location}, ${undisclosed}, ${spanish}, "${street}", "${city}", "${zip}", "${website}", "${email}", "${description}", ${null});`;
+        await prisma.$executeRawUnsafe(query1);
+
+        services.forEach(async (service) => {
+          try {
+            var query2 = `INSERT INTO \`the-path\`.ServiceOnProvider VALUES (${id}, "${service}")`;
+            await prisma.$executeRawUnsafe(query2);
+          } catch (e) {
+            console.log('ERROR WITH ADDING SERVICE LINK');
+            console.log(query2);
+          }
         });
-        console.log(`Added row ${provider[0]}`);
       } catch (e) {
         console.log(`Error adding row ${provider[0]}`);
-        clg(e);
+        console.log(`query`, query1);
+        console.log(e);
       }
     }
   });
