@@ -3,10 +3,10 @@ import { PrismaClient, Prisma } from '@prisma/client';
 const prisma = new PrismaClient();
 
 export default async function handler(req, res) {
-  const { lat, long, distance = 10000 } = req.query;
+  const { lat, lng, distance = 10000 } = req.query;
 
   try {
-    const userLocation = `ST_GeomFromText('POINT(${lat} ${long})', 4326)`;
+    const userLocation = `ST_GeomFromText('POINT(${lat} ${lng})', 4326)`;
     const query = Prisma.sql`
       SELECT s.id, s.description, COUNT(sop.service_id) AS total FROM ServiceOnProvider sop
       INNER JOIN Provider p ON p.id = sop.provider_id AND ST_Distance_Sphere(p.location, ${Prisma.raw(

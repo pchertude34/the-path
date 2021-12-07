@@ -1,9 +1,9 @@
 import { ChakraProvider, CSSReset } from '@chakra-ui/react';
-import { Wrapper, Status } from '@googlemaps/react-wrapper';
+import { QueryClient, QueryClientProvider } from 'react-query';
 import SiteLayout from '../components/SiteLayout';
 import theme from '../chakra.theme';
 
-// import '../styles/globals.css';
+const queryClient = new QueryClient();
 
 function MyApp({ Component, pageProps }) {
   // Conditionally render layout based on the component that we are rendering.
@@ -20,10 +20,12 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <ChakraProvider theme={theme}>
-      <CSSReset config={config} />
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
+      <QueryClientProvider client={queryClient}>
+        <CSSReset config={config} />
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </QueryClientProvider>
     </ChakraProvider>
   );
 }
