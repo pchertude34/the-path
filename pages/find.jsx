@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useQuery } from 'react-query';
 import { Container } from '@chakra-ui/react';
 import { PathFormProvider } from '../state';
@@ -6,12 +6,12 @@ import PathFormItem from '../components/PathFormItem';
 import LocationInput from '../components/LocationInput';
 import ServiceTypeContainer from '../components/ServiceTypeContainer';
 
+import { getServiceTypes } from '../utils/api';
+
 function Find() {
   const [userLatitude, setUserLatitude] = useState();
   const [userLongitude, setUserLongitude] = useState();
-
-  console.log(`userLatitude`, userLatitude);
-  console.log(`userLongitude`, userLongitude);
+  const [selectedServiceType, setSelectedServiceType] = useState();
 
   /**
    * Handler for dealing with user location updates from the Location Input component
@@ -28,6 +28,7 @@ function Find() {
     <PathFormProvider>
       <Container maxW="container.lg" mt={8}>
         <PathFormItem
+          defaultAnimationIn={true}
           title="Where are you located?"
           description="Enter the address of you, or a person you are trying to help. Or use your current location."
           mb={12}

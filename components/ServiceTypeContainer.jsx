@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Select } from '@chakra-ui/react';
+import { Alert, SimpleGrid, Select } from '@chakra-ui/react';
 import { useQuery } from 'react-query';
 import { getServiceTypes } from '../utils/api';
 
 import ServiceTypeCard from './ServiceTypeCard';
+import MessageBox from './MessageBox';
 
 const DISTANCE_OPTIONS = [
   { label: '5 miles', value: 5000 },
@@ -12,7 +13,8 @@ const DISTANCE_OPTIONS = [
 ];
 
 function ServiceTypeContainer(props) {
-  const { latitude, longitude } = props;
+  // setAnimationIn prop comes from the parent PathFormItem component
+  const { latitude, longitude, setAnimationIn } = props;
   const [distance, setDistance] = useState(10000);
 
   // We need to delay the initial query until we have latitude, longitude, and distance
@@ -30,15 +32,46 @@ function ServiceTypeContainer(props) {
     }
   }, [distance, latitude, longitude, refetch]);
 
+  // Animate the component in when once the data loads
+  useEffect(() => {
+    if (data) setAnimationIn(true);
+  }, [data, setAnimationIn]);
+
   return (
     <div>
-      <Select value={distance} bg="white" w={120} onChange={(e) => setDistance(e.target.value)}>
+      <Select
+        value={distance}
+        bg="white"
+        w={120}
+        onChange={(e) => setDistance(e.target.value)}
+        mb={4}
+      >
         {DISTANCE_OPTIONS.map((option) => (
           <option key={option.value} value={option.value}>
             {option.label}
           </option>
         ))}
       </Select>
+
+      {data && data.length > 0 && (
+        <SimpleGrid columns={{ base: 1, md: 2 }} spacing={2} maxH={400} overflow="auto" py={4}>
+          {data.map((serviceType) => (
+            <ServiceTypeCard key={serviceType.id} title={serviceType.description} />
+          ))}
+        </SimpleGrid>
+      )}
+
+      {data && data.length === 0 && (
+        <MessageBox message="We couldn't find any services near you within the selected distance." />
+      )}
+
+      {isLoading && <MessageBox isLoading />}
+
+      {isError && (
+        <Alert status="error">
+          We encountered an error while searching for services. Please try again later.
+        </Alert>
+      )}
     </div>
   );
 }

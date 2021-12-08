@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Box, VStack, Heading } from '@chakra-ui/react';
+import { Box, VStack, Text } from '@chakra-ui/react';
 
 function ServiceTypeCard(props) {
   const { title, icon, onClick, isSelected = false, ...rest } = props;
@@ -11,16 +11,16 @@ function ServiceTypeCard(props) {
       borderWidth="1px"
       borderRadius="md"
       borderColor="gray.200"
-      boxShadow={isSelected ? 'none' : '2xl'}
+      boxShadow={isSelected ? 'none' : 'lg'}
       alignContent="center"
-      bgColor={isSelected ? 'secondary.400' : 'white'}
+      bgColor={isSelected ? 'primary.400' : 'white'}
       w="full"
       h="full"
       p={6}
       _hover={
         !isSelected
           ? {
-              bgColor: 'secondary.400',
+              bgColor: 'primary.300',
               boxShadow: 'none',
               transform: 'translateY(4px)',
               transition: 'all .2s',
@@ -30,12 +30,9 @@ function ServiceTypeCard(props) {
       {...rest}
     >
       <VStack>
-        <Heading as="h3" size="md">
+        <Text size="md" fontWeight="bold">
           {title}
-        </Heading>
-        <Heading as="h3" size="lg">
-          {icon}
-        </Heading>
+        </Text>
       </VStack>
     </Box>
   );
