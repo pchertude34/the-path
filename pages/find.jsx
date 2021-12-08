@@ -6,8 +6,6 @@ import PathFormItem from '../components/PathFormItem';
 import LocationInput from '../components/LocationInput';
 import ServiceTypeContainer from '../components/ServiceTypeContainer';
 
-import { getServiceTypes } from '../utils/api';
-
 function Find() {
   const [userLatitude, setUserLatitude] = useState();
   const [userLongitude, setUserLongitude] = useState();
@@ -45,8 +43,17 @@ function Find() {
           description="Select a type of the nearby services that you need to access"
           mb={12}
         >
-          <ServiceTypeContainer latitude={userLatitude} longitude={userLongitude} />
+          <ServiceTypeContainer
+            latitude={userLatitude}
+            longitude={userLongitude}
+            onServiceTypeSelected={setSelectedServiceType}
+          />
         </PathFormItem>
+
+        <PathFormItem
+          title="Select a service to locate"
+          description="Select one of the services we know about to get directions or learn more about it."
+        ></PathFormItem>
       </Container>
     </PathFormProvider>
   );

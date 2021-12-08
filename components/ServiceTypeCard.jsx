@@ -8,6 +8,7 @@ function ServiceTypeCard(props) {
   return (
     <Box
       as="button"
+      onClick={() => onClick && onClick()}
       borderWidth="1px"
       borderRadius="md"
       borderColor="gray.200"

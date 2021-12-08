@@ -14,8 +14,9 @@ const DISTANCE_OPTIONS = [
 
 function ServiceTypeContainer(props) {
   // setAnimationIn prop comes from the parent PathFormItem component
-  const { latitude, longitude, setAnimationIn } = props;
+  const { latitude, longitude, onServiceTypeSelected, setAnimationIn } = props;
   const [distance, setDistance] = useState(10000);
+  const [selectedServiceType, setSelectedServiceType] = useState();
 
   // We need to delay the initial query until we have latitude, longitude, and distance
   // Otherwise we will get bad results.
@@ -37,6 +38,11 @@ function ServiceTypeContainer(props) {
     if (data) setAnimationIn(true);
   }, [data, setAnimationIn]);
 
+  // Pass the selected service type to the parent whenever it changes.
+  useEffect(() => {
+    onServiceTypeSelected && onServiceTypeSelected(selectedServiceType);
+  }, [selectedServiceType, onServiceTypeSelected]);
+
   return (
     <div>
       <Select
@@ -56,7 +62,12 @@ function ServiceTypeContainer(props) {
       {data && data.length > 0 && (
         <SimpleGrid columns={{ base: 1, md: 2 }} spacing={2} maxH={400} overflow="auto" py={4}>
           {data.map((serviceType) => (
-            <ServiceTypeCard key={serviceType.id} title={serviceType.description} />
+            <ServiceTypeCard
+              key={serviceType.id}
+              title={serviceType.description}
+              isSelected={selectedServiceType === serviceType.id}
+              onClick={() => setSelectedServiceType(serviceType.id)}
+            />
           ))}
         </SimpleGrid>
       )}

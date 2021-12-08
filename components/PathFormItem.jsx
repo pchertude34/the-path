@@ -19,7 +19,7 @@ function PathFormItem(props) {
         </Box>
         {/* Allow the child to trigger the animation and mount itself when it's ready 
         by passing the setAnimationIn function to it */}
-        <Box w="full">{React.cloneElement(children, { setAnimationIn })}</Box>
+        <Box w="full">{children && React.cloneElement(children, { setAnimationIn })}</Box>
       </VStack>
     </SlideFade>
   );
