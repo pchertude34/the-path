@@ -1,6 +1,7 @@
 const fs = require('fs');
 const parse = require('csv-parse');
 const { PrismaClient } = require('@prisma/client');
+const axios = require('axios');
 
 const prisma = new PrismaClient();
 
@@ -39,9 +40,22 @@ fs.createReadStream(filePath)
           description,
         ] = provider;
 
-        const location = `ST_GeomFromText('POINT(${lat} ${long})', 4326)`;
+        const googlePlace = await axios.get(
+          `https://maps.googleapis.com/maps/api/place/findplacefromtext/json`,
+          {
+            params: {
+              input: `${name}+${street}`,
+              inputtype: 'textquery',
+              key: process.env.GOOGLE_MAPS_API_KEY,
+            },
+          }
+        );
+        const placeId = googlePlace.data?.candidates[0]?.place_id;
 
-        var query1 = `INSERT INTO \`the-path\`.Provider VALUES (${id}, "${name}", ${location}, ${undisclosed}, ${spanish}, "${street}", "${city}", "${zip}", "${website}", "${email}", "${description}", ${null});`;
+        // console.log(`placeId`, placeId);
+
+        const location = `ST_GeomFromText('POINT(${lat} ${long})', 4326)`;
+        var query1 = `INSERT INTO \`the-path\`.Provider VALUES (${id}, "${placeId}", "${name}", ${location}, ${undisclosed}, ${spanish}, "${street}", "${city}", "${zip}", "${website}", "${email}", "${description}", ${null});`;
         await prisma.$executeRawUnsafe(query1);
 
         services.forEach(async (service) => {

@@ -70,7 +70,7 @@ function LocationInput(props) {
           </Text>
         )}
       </FormControl>
-      <Flex>
+      <Flex display={{ base: 'block', md: 'flex' }}>
         <Button
           leftIcon={<MdLocationOn />}
           colorScheme="primary"
@@ -78,11 +78,12 @@ function LocationInput(props) {
           isLoading={isCalculatingLocation}
           loadingText="Calculating Location"
           onClick={calculateLocation}
+          w={{ base: 'full', md: 'auto' }}
         >
           Use my current location
         </Button>
         {!!latitude && !!longitude && (
-          <Box ml="auto">
+          <Box ml="auto" mt={{ base: 2, md: 0 }}>
             <Text fontSize="xs">
               <b>Lat: </b>
               {latitude}

@@ -1,41 +1,28 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Box, VStack, Text } from '@chakra-ui/react';
+import { Box, VStack, Tag, Text } from '@chakra-ui/react';
+import CardButton from './CardButton';
 
 function ServiceTypeCard(props) {
-  const { title, icon, onClick, isSelected = false, ...rest } = props;
+  const { title, icon, count, onClick, isSelected = false, ...rest } = props;
 
   return (
-    <Box
-      as="button"
-      onClick={() => onClick && onClick()}
-      borderWidth="1px"
-      borderRadius="md"
-      borderColor="gray.200"
-      boxShadow={isSelected ? 'none' : 'lg'}
+    <CardButton
+      onClick={onClick}
       alignContent="center"
-      bgColor={isSelected ? 'primary.400' : 'white'}
       w="full"
       h="full"
       p={6}
-      _hover={
-        !isSelected
-          ? {
-              bgColor: 'primary.300',
-              boxShadow: 'none',
-              transform: 'translateY(4px)',
-              transition: 'all .2s',
-            }
-          : {}
-      }
+      active={isSelected}
       {...rest}
     >
       <VStack>
         <Text size="md" fontWeight="bold">
           {title}
         </Text>
+        <Tag borderRadius="full">{count}</Tag>
       </VStack>
-    </Box>
+    </CardButton>
   );
 }
 

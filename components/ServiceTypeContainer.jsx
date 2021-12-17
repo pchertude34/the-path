@@ -14,7 +14,7 @@ const DISTANCE_OPTIONS = [
 
 function ServiceTypeContainer(props) {
   // setAnimationIn prop comes from the parent PathFormItem component
-  const { latitude, longitude, onServiceTypeSelected, setAnimationIn } = props;
+  const { latitude, longitude, onServiceTypeSelected, onDistanceChange, setAnimationIn } = props;
   const [distance, setDistance] = useState(10000);
   const [selectedServiceType, setSelectedServiceType] = useState();
 
@@ -43,6 +43,11 @@ function ServiceTypeContainer(props) {
     onServiceTypeSelected && onServiceTypeSelected(selectedServiceType);
   }, [selectedServiceType, onServiceTypeSelected]);
 
+  // Update the parent component distance state when the user updates the distance here
+  useEffect(() => {
+    onDistanceChange(distance);
+  }, [distance, onDistanceChange]);
+
   return (
     <div>
       <Select
@@ -66,6 +71,7 @@ function ServiceTypeContainer(props) {
               key={serviceType.id}
               title={serviceType.description}
               isSelected={selectedServiceType === serviceType.id}
+              count={serviceType.total}
               onClick={() => setSelectedServiceType(serviceType.id)}
             />
           ))}

@@ -8,7 +8,7 @@ function PathFormItem(props) {
 
   return (
     <SlideFade offsetY="20px" in={animationIn}>
-      <VStack w="full" bg="gray.50" borderRadius="md" p={8} {...rest}>
+      <VStack w="full" bg="gray.50" borderRadius="md" p={{ base: 4, md: 8 }} {...rest}>
         <Box w="full" mb={4}>
           <Heading as="h2" size="lg">
             {title}

@@ -7,3 +7,11 @@ export function getServiceTypes({ distance, latitude, longitude }) {
     })
     .then((response) => response.data);
 }
+
+export function getServiceList({ distance, latitude, longitude, serviceType }) {
+  return axios
+    .get('/api/getServiceList', {
+      params: { distance, lat: latitude, lng: longitude, serviceType },
+    })
+    .then((response) => response.data);
+}

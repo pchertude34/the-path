@@ -16,10 +16,10 @@ const customTheme = extendTheme({
       600: '#EB4A47',
     },
     secondary: {
-      400: '#A1C7E3',
-      500: '#90BEDE',
-      600: '#81B5D9',
-      700: '#81B5D9',
+      400: '#F8E8C9',
+      500: '#F5E0B7',
+      600: '#F3D9A5',
+      700: '#F0D193',
     },
     lightGray: {
       100: '#F0F0F0',

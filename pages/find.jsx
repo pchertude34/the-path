@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { useQuery } from 'react-query';
+import React, { useState } from 'react';
 import { Container } from '@chakra-ui/react';
 import { PathFormProvider } from '../state';
 import PathFormItem from '../components/PathFormItem';
 import LocationInput from '../components/LocationInput';
 import ServiceTypeContainer from '../components/ServiceTypeContainer';
+import ServiceList from '../components/ServiceList';
 
 function Find() {
   const [userLatitude, setUserLatitude] = useState();
   const [userLongitude, setUserLongitude] = useState();
+  const [distance, setDistance] = useState();
   const [selectedServiceType, setSelectedServiceType] = useState();
 
   /**
@@ -24,7 +25,7 @@ function Find() {
 
   return (
     <PathFormProvider>
-      <Container maxW="container.lg" mt={8}>
+      <Container maxW="container.lg" mt={8} minH="100vh">
         <PathFormItem
           defaultAnimationIn={true}
           title="Where are you located?"
@@ -46,14 +47,22 @@ function Find() {
           <ServiceTypeContainer
             latitude={userLatitude}
             longitude={userLongitude}
-            onServiceTypeSelected={setSelectedServiceType}
+            onDistanceChange={setDistance}
+            onServiceTypeSelected={(serviceId) => setSelectedServiceType(serviceId)}
           />
         </PathFormItem>
 
         <PathFormItem
           title="Select a service to locate"
           description="Select one of the services we know about to get directions or learn more about it."
-        ></PathFormItem>
+        >
+          <ServiceList
+            latitude={userLatitude}
+            longitude={userLongitude}
+            distance={distance}
+            serviceType={selectedServiceType}
+          />
+        </PathFormItem>
       </Container>
     </PathFormProvider>
   );
