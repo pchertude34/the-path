@@ -65,7 +65,7 @@ function ServiceTypeContainer(props) {
       </Select>
 
       {data && data.length > 0 && (
-        <SimpleGrid columns={{ base: 1, md: 2 }} spacing={2} maxH={400} overflow="auto" py={4}>
+        <SimpleGrid columns={{ base: 1, md: 2 }} spacing={2} maxH={600} overflow="auto" py={4}>
           {data.map((serviceType) => (
             <ServiceTypeCard
               key={serviceType.id}
