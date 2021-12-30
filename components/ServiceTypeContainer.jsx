@@ -21,7 +21,7 @@ function ServiceTypeContainer(props) {
   // We need to delay the initial query until we have latitude, longitude, and distance
   // Otherwise we will get bad results.
   const { isIdle, isLoading, isError, isFetching, data, error, refetch } = useQuery(
-    ['service-types', distance],
+    ['service-types', distance, latitude, longitude],
     () => getServiceTypes({ distance, latitude, longitude }),
     { enabled: false }
   );
