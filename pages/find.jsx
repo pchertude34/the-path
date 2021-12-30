@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Container } from '@chakra-ui/react';
-import { PathFormProvider } from '../state';
 import PathFormItem from '../components/PathFormItem';
 import LocationInput from '../components/LocationInput';
 import ServiceTypeContainer from '../components/ServiceTypeContainer';

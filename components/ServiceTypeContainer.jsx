@@ -2,20 +2,21 @@ import React, { useState, useEffect } from 'react';
 import { Alert, SimpleGrid, Select } from '@chakra-ui/react';
 import { useQuery } from 'react-query';
 import { getServiceTypes } from '../utils/api';
+import { convertMilesToMeters } from '../utils/utils';
 
 import ServiceTypeCard from './ServiceTypeCard';
 import MessageBox from './MessageBox';
 
 const DISTANCE_OPTIONS = [
-  { label: '5 miles', value: 5000 },
-  { label: '10 miles', value: 10000 },
-  { label: '20 miles', value: 20000 },
+  { label: '5 miles', value: convertMilesToMeters(5) },
+  { label: '10 miles', value: convertMilesToMeters(10) },
+  { label: '20 miles', value: convertMilesToMeters(20) },
 ];
 
 function ServiceTypeContainer(props) {
   // setAnimationIn prop comes from the parent PathFormItem component
   const { latitude, longitude, onServiceTypeSelected, onDistanceChange, setAnimationIn } = props;
-  const [distance, setDistance] = useState(10000);
+  const [distance, setDistance] = useState(DISTANCE_OPTIONS[1].value);
   const [selectedServiceType, setSelectedServiceType] = useState();
 
   // We need to delay the initial query until we have latitude, longitude, and distance

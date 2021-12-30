@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Box, Flex, Text, SkeletonText, VStack } from '@chakra-ui/react';
-import { useQuery } from 'react-query';
 import CardButton from './CardButton';
 import BusinessStatusLabel from './BusinessStatusLabel';
 import { serviceDetailTypes, useServiceDetailContext } from '../state';
+import { convertMetersToMiles } from '../utils/utils';
 
 function ServiceListItem(props) {
-  const { name, place_id, active, city, street, map, onClick } = props;
+  const { place_id, active, distance, map, onClick } = props;
   const { state, dispatch } = useServiceDetailContext();
 
   const currentPlace = state.serviceMap[place_id];
@@ -72,7 +72,12 @@ function ServiceListItem(props) {
             {currentPlace.name}
           </Text>
           <Text fontSize="sm">{currentPlace.address}</Text>
-          <BusinessStatusLabel isOpen={currentPlace.opening_hours?.isOpen()} mt={2} />
+          <Flex align="center" mt={2} w="full">
+            <BusinessStatusLabel isOpen={currentPlace.opening_hours?.isOpen()} />
+            <Text fontSize="xs" fontWeight="bold" ml="auto">
+              {convertMetersToMiles(distance)} miles
+            </Text>
+          </Flex>
         </Flex>
       </CardButton>
     );
