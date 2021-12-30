@@ -24,47 +24,45 @@ function Find() {
   }
 
   return (
-    <PathFormProvider>
-      <Container maxW="container.lg" mt={8} minH="100vh">
-        <PathFormItem
-          defaultAnimationIn={true}
-          title="Where are you located?"
-          description="Enter the address of you, or a person you are trying to help. Or use your current location."
-          mb={12}
-        >
-          <LocationInput
-            label="Street Address"
-            placeholder="1234 S Main St, Portland OR"
-            onLocationChange={handleLocationChange}
-          />
-        </PathFormItem>
+    <Container maxW="container.lg" mt={8} minH="100vh">
+      <PathFormItem
+        defaultAnimationIn={true}
+        title="Where are you located?"
+        description="Enter the address of you, or a person you are trying to help. Or use your current location."
+        mb={12}
+      >
+        <LocationInput
+          label="Street Address"
+          placeholder="1234 S Main St, Portland OR"
+          onLocationChange={handleLocationChange}
+        />
+      </PathFormItem>
 
-        <PathFormItem
-          title="What sort of service are you looking for?"
-          description="Select a type of the nearby services that you need to access"
-          mb={12}
-        >
-          <ServiceTypeContainer
-            latitude={userLatitude}
-            longitude={userLongitude}
-            onDistanceChange={setDistance}
-            onServiceTypeSelected={(serviceId) => setSelectedServiceType(serviceId)}
-          />
-        </PathFormItem>
+      <PathFormItem
+        title="What sort of service are you looking for?"
+        description="Select a type of the nearby services that you need to access"
+        mb={12}
+      >
+        <ServiceTypeContainer
+          latitude={userLatitude}
+          longitude={userLongitude}
+          onDistanceChange={setDistance}
+          onServiceTypeSelected={(serviceId) => setSelectedServiceType(serviceId)}
+        />
+      </PathFormItem>
 
-        <PathFormItem
-          title="Select a service to locate"
-          description="Select one of the services we know about to get directions or learn more about it."
-        >
-          <ServiceList
-            latitude={userLatitude}
-            longitude={userLongitude}
-            distance={distance}
-            serviceType={selectedServiceType}
-          />
-        </PathFormItem>
-      </Container>
-    </PathFormProvider>
+      <PathFormItem
+        title="Select a service to locate"
+        description="Select one of the services we know about to get directions or learn more about it."
+      >
+        <ServiceList
+          latitude={userLatitude}
+          longitude={userLongitude}
+          distance={distance}
+          serviceType={selectedServiceType}
+        />
+      </PathFormItem>
+    </Container>
   );
 }
 

@@ -1,3 +1,3 @@
-import { types } from './pathFormReducer';
-export * from './pathFormProvider';
-export { types as pathFormTypes };
+import { types } from './serviceDetailReducer';
+export * from './ServiceDetailProvider';
+export { types as serviceDetailTypes };
