@@ -14,6 +14,10 @@ Parameters:
   VpcId:
     Type: AWS::EC2::VPC::Id
     Default: vpc-01ddcd882610d58c3
+  DatabaseUrl:
+    Type: String
+  GoogleMapsApiKey:
+    Type: String
 
 Mappings:
   Environment:
@@ -151,6 +155,10 @@ Resources:
               Value: !Ref Environment
             - Name: NODE_ENV
               Value: production
+            - Name: DATABASE_URL
+              Vaule: !Ref DatabaseUrl
+            - Name: NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
+              Value: !Ref GoogleMapsApiKey
           Essential: true
           Image: !Ref ContainerDefaultImage
           Name: !Sub the-path-${Environment}

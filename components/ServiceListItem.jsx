@@ -32,7 +32,7 @@ function ServiceListItem(props) {
       service.getDetails(request, (place, status) => {
         if (status === 'OK') {
           const { address_components } = place;
-          const address = `${address_components[0].short_name} ${address_components[1].short_name}, ${address_components[3].short_name} ${address_components[5].short_name}`;
+          const address = `${address_components[0].short_name} ${address_components[1].short_name}, ${address_components[4].short_name} ${address_components[6].short_name}`;
 
           dispatch({
             type: serviceDetailTypes.ADD_SERVICE,
