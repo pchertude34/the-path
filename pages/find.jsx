@@ -27,7 +27,7 @@ function Find() {
       <PathFormItem
         defaultAnimationIn={true}
         title="Where are you located?"
-        description="Enter the address of you, or a person you are trying to help. Or use your current location."
+        description="Enter the address of you, or a person you are trying to help. Or you can use your current location."
         mb={12}
       >
         <LocationInput
