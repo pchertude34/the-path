@@ -3,8 +3,6 @@ import Head from 'next/head';
 import { Container } from '@chakra-ui/react';
 import Navbar from './Navbar';
 
-const { NEXT_PUBLIC_GOOGLE_MAPS_API_KEY } = process.env;
-
 function SiteLayout({ children }) {
   return (
     <React.Fragment>
@@ -14,7 +12,7 @@ function SiteLayout({ children }) {
         <link rel="icon" href="/favicon.ico" />
         <script
           async
-          src={`https://maps.googleapis.com/maps/api/js?key=${NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places`}
+          src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places`}
         ></script>
       </Head>
       <Navbar />
