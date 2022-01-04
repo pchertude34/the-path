@@ -4,6 +4,7 @@ const prisma = new PrismaClient();
 
 export default async function handler(req, res) {
   const { lat, lng, distance = 10000 } = req.query;
+  console.log(`process.env`, process.env);
 
   try {
     const userLocation = `ST_GeomFromText('POINT(${lat} ${lng})', 4326)`;
