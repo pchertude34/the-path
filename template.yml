@@ -157,7 +157,7 @@ Resources:
               Value: production
             - Name: DATABASE_URL
               Value: !Ref DatabaseUrl
-            - Name: NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
+            - Name: GOOGLE_API_KEY
               Value: !Ref GoogleMapsApiKey
           Essential: true
           Image: !Ref ContainerDefaultImage
