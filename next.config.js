@@ -5,6 +5,6 @@ module.exports = {
     DATABASE_URL: process.env.DATABASE_URL,
   },
   publicRuntimeConfig: {
-    googleApiKey: process.env.googleApiKey,
+    googleApiKey: process.env.GOOGLE_API_KEY,
   },
 };
