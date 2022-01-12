@@ -1,12 +1,7 @@
 import React from 'react';
 import Head from 'next/head';
-import getConfig from 'next/config';
 import { Container } from '@chakra-ui/react';
 import Navbar from './Navbar';
-
-const {
-  publicRuntimeConfig: { googleApiKey },
-} = getConfig();
 
 function SiteLayout({ children }) {
   return (
@@ -17,7 +12,7 @@ function SiteLayout({ children }) {
         <link rel="icon" href="/favicon.ico" />
         <script
           async
-          src={`https://maps.googleapis.com/maps/api/js?key=${googleApiKey}&libraries=places`}
+          src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_API_KEY}&libraries=places`}
         ></script>
       </Head>
       <Navbar />
