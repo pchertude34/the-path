@@ -21,6 +21,7 @@ export default async function handler(req, res) {
 
     res.send(nearbyProviderTypes);
   } catch (error) {
+    console.error(error);
     let errorMessage = 'error getting provider types';
     let statusCode = 500;
 
