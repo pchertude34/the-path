@@ -143,7 +143,13 @@ function ServiceList(props) {
           <div ref={mapRef} style={{ height: '500px' }}></div>
         </Box>
       </Flex>
-      <ServiceDetailModal isOpen={isOpen} onClose={onClose} service={selectedService} />
+      <ServiceDetailModal
+        isOpen={isOpen}
+        onClose={onClose}
+        service={selectedService}
+        latitude={latitude}
+        longitude={longitude}
+      />
     </React.Fragment>
   );
 }

@@ -30,9 +30,22 @@ function ServiceDetailModal(props) {
   // When the application first loads, our service prop will be undefined. That's why we need to
   // make sure we use optional chaining any time we reference a value on the service prop, and
   // we need defaults any time we destructure the service object.
-  const { isOpen, onClose, service = {} } = props;
+  const { isOpen, onClose, service = {}, latitude, longitude } = props;
   const { opening_hours: { weekday_text = [], isOpen: isLocationOpen } = {} } = service;
   const dayRef = useRef(getCurrentDay());
+
+  console.log(`service`, service);
+
+  function generateNavigationLink() {
+    let navLink;
+
+    if (service && latitude && longitude) {
+      navLink = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
+        service.name
+      )}destination_place_id=${encodeURIComponent(service.placeId)}`;
+    }
+    return navLink;
+  }
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size={'2xl'}>
@@ -75,7 +88,15 @@ function ServiceDetailModal(props) {
           <Button variant="ghost" onClick={onClose} mr="auto">
             Close
           </Button>
-          <Button colorScheme="primary">Take Me There</Button>
+          <Button
+            as="a"
+            colorScheme="primary"
+            href={generateNavigationLink()}
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            Take Me There
+          </Button>
         </ModalFooter>
       </ModalContent>
     </Modal>
