@@ -48,17 +48,17 @@ function ServiceDetailModal(props) {
   }
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size={'2xl'}>
+    <Modal isOpen={isOpen} onClose={onClose} size={'xl'} scrollBehavior="inside">
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader></ModalHeader>
+        <ModalHeader>{service?.name}</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <Heading as="h1" size="lg" mb={2}>
+          {/* <Heading as="h1" size="lg" mb={2}>
             {service?.name}
-          </Heading>
+          </Heading> */}
           <Flex mb={8}>
-            <Text fontWeight="semibold">{service?.address}</Text>
+            <Text fontWeight="">{service?.address}</Text>
             <Text fontWeight="semibold" ml="auto">
               {convertMetersToMiles(service.distance)} miles
             </Text>
