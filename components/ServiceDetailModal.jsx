@@ -42,7 +42,7 @@ function ServiceDetailModal(props) {
     if (service && latitude && longitude) {
       navLink = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
         service.name
-      )}destination_place_id=${encodeURIComponent(service.placeId)}`;
+      )}&destination_place_id=${encodeURIComponent(service.placeId)}`;
     }
     return navLink;
   }
