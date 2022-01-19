@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Script from 'next/script';
 import { Container } from '@chakra-ui/react';
 import PathFormItem from '../components/PathFormItem';
 import LocationInput from '../components/LocationInput';
@@ -24,6 +25,10 @@ function Find() {
 
   return (
     <Container maxW="container.lg" mt={8} p={0} minH="100vh">
+      <Script
+        src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_API_KEY}&libraries=places`}
+        strategy="beforeInteractive"
+      ></Script>
       <PathFormItem
         defaultAnimationIn={true}
         title="Where are you located?"
