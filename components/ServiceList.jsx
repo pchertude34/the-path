@@ -41,7 +41,7 @@ function ServiceList(props) {
 
   // Initialize the google map. Change it when the user location changes so we can recenter it.
   useEffect(() => {
-    if (mapRef.current) {
+    if (mapRef.current && latitude && longitude) {
       setMap(
         new window.google.maps.Map(mapRef.current, {
           center: { lat: latitude, lng: longitude },
@@ -103,7 +103,12 @@ function ServiceList(props) {
       <Flex w="full" h="full" spacing={10}>
         <VStack w="full">
           <ServiceDetailProvider>
-            <Box w="full" mr={{ base: 0, md: 4 }} maxH={500} overflow="auto">
+            <Box
+              w="full"
+              mr={{ base: 0, md: 4 }}
+              maxH={{ base: 'full', md: 500 }}
+              overflow={{ base: 'none', md: 'auto' }}
+            >
               {servicePageData &&
                 servicePageData.map((service) => (
                   <ServiceListItem
