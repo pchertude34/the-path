@@ -23,7 +23,7 @@ function Find() {
   }
 
   return (
-    <Container maxW="container.lg" mt={8} minH="100vh">
+    <Container maxW="container.lg" mt={8} p={0} minH="100vh">
       <PathFormItem
         defaultAnimationIn={true}
         title="Where are you located?"

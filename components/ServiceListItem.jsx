@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { Box, Flex, Text, SkeletonText, VStack } from '@chakra-ui/react';
 import CardButton from './CardButton';
 import BusinessStatusLabel from './BusinessStatusLabel';
@@ -66,7 +67,7 @@ function ServiceListItem(props) {
 
   if (currentPlace && !currentPlace.error) {
     return (
-      <CardButton onClick={onClick} w="full" p={4} active={active}>
+      <CardButton onClick={() => onClick(currentPlace)} w="full" p={4} active={active}>
         <Flex textAlign="left" direction="column" align="start">
           <Text fontSize="md" fontWeight="bold">
             {currentPlace.name}
@@ -90,5 +91,9 @@ function ServiceListItem(props) {
     );
   }
 }
+
+ServiceListItem.propTypes = {
+  onClick: PropTypes.func.isRequired,
+};
 
 export default ServiceListItem;

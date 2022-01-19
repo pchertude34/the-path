@@ -1,11 +1,22 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { Box, IconButton, Flex, HStack, Text, VStack } from '@chakra-ui/react';
+import {
+  Box,
+  IconButton,
+  Flex,
+  HStack,
+  Text,
+  VStack,
+  useDisclosure,
+  useBreakpoint,
+  useBreakpointValue,
+} from '@chakra-ui/react';
 import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
 import { useQuery } from 'react-query';
 import { getServiceList } from '../utils/api';
 import { ServiceDetailProvider } from '../state/ServiceDetailProvider';
 import ServiceListItem from './ServiceListItem';
+import ServiceDetailModal from './ServiceDetailModal';
 
 // limit for the amount of service place details we load per page
 const SERVICE_PAGE_SIZE = 5;
@@ -17,6 +28,8 @@ function ServiceList(props) {
   const [servicePageData, setServicePageData] = useState([]);
   const [selectedService, setSelectedService] = useState();
   const mapRef = useRef();
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const { isIdle, isLoading, isError, isSuccess, isFetching, data, error, refetch } = useQuery(
     ['service-list', serviceType],
@@ -80,47 +93,58 @@ function ServiceList(props) {
     }
   }, [currentPage, data]);
 
-  return (
-    <Flex w="full" h="full" spacing={10}>
-      <VStack>
-        <ServiceDetailProvider>
-          <Box w="400px" mr={4} maxH={500} overflow="auto">
-            {servicePageData &&
-              servicePageData.map((service) => (
-                <ServiceListItem
-                  key={service.id}
-                  onClick={() => setSelectedService(service.id)}
-                  active={service.id === selectedService}
-                  map={map}
-                  {...service}
-                />
-              ))}
-          </Box>
-        </ServiceDetailProvider>
+  function handleServiceSelect(service) {
+    setSelectedService(service);
+    onOpen();
+  }
 
-        <HStack spacing={12}>
-          <IconButton
-            aria-label="page-back"
-            icon={<ArrowBackIcon />}
-            disabled={currentPage === 1}
-            onClick={() => setCurrentPage(currentPage - 1)}
-          />
-          <Text>
-            {currentPage} of {lastPage}
-          </Text>
-          <IconButton
-            aria-label="page-forward"
-            icon={<ArrowForwardIcon />}
-            disabled={currentPage === lastPage}
-            onClick={() => setCurrentPage(currentPage + 1)}
-          />
-        </HStack>
-      </VStack>
-      <Box w="full">
-        {/* <MapWrapper latitude={latitude} longitude={longitude} /> */}
-        <div ref={mapRef} style={{ height: '500px' }}></div>
-      </Box>
-    </Flex>
+  return (
+    <React.Fragment>
+      <Flex w="full" h="full" spacing={10}>
+        <VStack w="full">
+          <ServiceDetailProvider>
+            <Box w="full" mr={{ base: 0, md: 4 }} maxH={500} overflow="auto">
+              {servicePageData &&
+                servicePageData.map((service) => (
+                  <ServiceListItem
+                    key={service.id}
+                    // This is kinda confusing since the service data being used in this map is from the database,
+                    // but what we really need is the google places service data that comes from the ServiceListItem
+                    // that's why we are doing this weird spread thing.
+                    onClick={(googlePlace) =>
+                      handleServiceSelect({ ...googlePlace, distance: service.distance })
+                    }
+                    map={map}
+                    {...service}
+                  />
+                ))}
+            </Box>
+          </ServiceDetailProvider>
+
+          <HStack spacing={12}>
+            <IconButton
+              aria-label="page-back"
+              icon={<ArrowBackIcon />}
+              disabled={currentPage === 1}
+              onClick={() => setCurrentPage(currentPage - 1)}
+            />
+            <Text>
+              {currentPage} of {lastPage}
+            </Text>
+            <IconButton
+              aria-label="page-forward"
+              icon={<ArrowForwardIcon />}
+              disabled={currentPage === lastPage}
+              onClick={() => setCurrentPage(currentPage + 1)}
+            />
+          </HStack>
+        </VStack>
+        <Box display={{ base: 'none', md: 'block' }} w="full">
+          <div ref={mapRef} style={{ height: '500px' }}></div>
+        </Box>
+      </Flex>
+      <ServiceDetailModal isOpen={isOpen} onClose={onClose} service={selectedService} />
+    </React.Fragment>
   );
 }
 
