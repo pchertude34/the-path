@@ -113,7 +113,7 @@ function ServiceList(props) {
         {showMap ? 'View List' : 'View Map'}
       </Button>
       <Flex w="full" h="full" spacing={10}>
-        <VStack w="full" display={{ base: !showMap ? 'flex' : 'none', md: 'block' }}>
+        <VStack w="full" display={{ base: !showMap ? 'flex' : 'none', md: 'flex' }}>
           <ServiceDetailProvider>
             <Box
               w="full"
