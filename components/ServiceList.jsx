@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import {
   Box,
+  Button,
   IconButton,
   Flex,
   HStack,
@@ -12,6 +13,7 @@ import {
   useBreakpointValue,
 } from '@chakra-ui/react';
 import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
+import { MdMap, MdList } from 'react-icons/md';
 import { useQuery } from 'react-query';
 import { getServiceList } from '../utils/api';
 import { ServiceDetailProvider } from '../state/ServiceDetailProvider';
@@ -27,6 +29,7 @@ function ServiceList(props) {
   const [currentPage, setCurrentPage] = useState(1);
   const [servicePageData, setServicePageData] = useState([]);
   const [selectedService, setSelectedService] = useState();
+  const [showMap, setShowMap] = useState(false);
   const mapRef = useRef();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -100,8 +103,17 @@ function ServiceList(props) {
 
   return (
     <React.Fragment>
+      <Button
+        mb={6}
+        leftIcon={showMap ? <MdList /> : <MdMap />}
+        variant="outline"
+        onClick={() => setShowMap(!showMap)}
+        display={{ base: 'block', md: 'none' }}
+      >
+        {showMap ? 'View List' : 'View Map'}
+      </Button>
       <Flex w="full" h="full" spacing={10}>
-        <VStack w="full">
+        <VStack w="full" display={{ base: !showMap ? 'flex' : 'none', md: 'block' }}>
           <ServiceDetailProvider>
             <Box
               w="full"
@@ -144,7 +156,7 @@ function ServiceList(props) {
             />
           </HStack>
         </VStack>
-        <Box display={{ base: 'none', md: 'block' }} w="full">
+        <Box display={{ base: showMap ? 'block' : 'none', md: 'block' }} w="full">
           <div ref={mapRef} style={{ height: '500px' }}></div>
         </Box>
       </Flex>
