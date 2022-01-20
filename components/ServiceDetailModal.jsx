@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import {
+  Box,
   Button,
   Flex,
   Modal,
@@ -31,10 +32,8 @@ function ServiceDetailModal(props) {
   // make sure we use optional chaining any time we reference a value on the service prop, and
   // we need defaults any time we destructure the service object.
   const { isOpen, onClose, service = {}, latitude, longitude } = props;
-  const { opening_hours: { weekday_text = [], isOpen: isLocationOpen } = {} } = service;
+  const { opening_hours: { weekday_text, isOpen: isLocationOpen } = {} } = service;
   const dayRef = useRef(getCurrentDay());
-
-  console.log(`service`, service);
 
   function generateNavigationLink() {
     let navLink;
@@ -54,9 +53,6 @@ function ServiceDetailModal(props) {
         <ModalHeader>{service?.name}</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          {/* <Heading as="h1" size="lg" mb={2}>
-            {service?.name}
-          </Heading> */}
           <Flex mb={8}>
             <Text fontWeight="">{service?.address}</Text>
             <Text fontWeight="semibold" ml="auto">
@@ -68,21 +64,25 @@ function ServiceDetailModal(props) {
             veniam placeat explicabo tempora aspernatur nihil provident ratione, commodi, earum
             suscipit adipisci laborum obcaecati vel. Illum, fuga odit!
           </Text>
-          <Flex align="center">
-            <Heading as="h2" size="md" decoration="underline" display="inline-block">
-              Hours
-            </Heading>
-            <BusinessStatusLabel isOpen={isLocationOpen && isLocationOpen()} ml={4} />
-          </Flex>
-          {weekday_text.map((t, index) => (
-            <Text
-              as={dayRef.current === index ? 'mark' : null}
-              fontWeight={dayRef.current === index ? 'bold' : 'regular'}
-              key={index}
-            >
-              {t}
-            </Text>
-          ))}
+          {weekday_text && (
+            <Box>
+              <Flex align="center">
+                <Heading as="h2" size="md" decoration="underline" display="inline-block">
+                  Hours
+                </Heading>
+                <BusinessStatusLabel isOpen={isLocationOpen && isLocationOpen()} ml={4} />
+              </Flex>
+              {weekday_text.map((t, index) => (
+                <Text
+                  as={dayRef.current === index ? 'mark' : null}
+                  fontWeight={dayRef.current === index ? 'bold' : 'regular'}
+                  key={index}
+                >
+                  {t}
+                </Text>
+              ))}
+            </Box>
+          )}
         </ModalBody>
         <ModalFooter>
           <Button variant="ghost" onClick={onClose} mr="auto">
