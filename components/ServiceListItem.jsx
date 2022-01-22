@@ -84,11 +84,13 @@ function ServiceListItem(props) {
     let marker;
 
     if (currentPlace && !currentPlace.error && map) {
+      console.log('adding marker');
       marker = new google.maps.Marker({
         position: currentPlace.geometry.location,
         title: currentPlace.name,
       });
       marker.setMap(map);
+      marker.addListener('click', () => onClick(currentPlace));
     }
 
     return () => {
@@ -96,7 +98,7 @@ function ServiceListItem(props) {
         marker.setMap(null);
       }
     };
-  }, [currentPlace, map]);
+  }, [currentPlace, map, onClick]);
 
   if (currentPlace && !currentPlace.error) {
     return (
