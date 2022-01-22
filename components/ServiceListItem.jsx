@@ -70,6 +70,10 @@ function ServiceListItem(props) {
           });
         } else {
           // set error for the place in state
+          dispatch({
+            type: serviceDetailTypes.SET_SERVICE_ERROR,
+            payload: { placeId: place_id, error: true },
+          });
         }
       });
     }
@@ -79,7 +83,7 @@ function ServiceListItem(props) {
   useEffect(() => {
     let marker;
 
-    if (currentPlace && map) {
+    if (currentPlace && !currentPlace.error && map) {
       marker = new google.maps.Marker({
         position: currentPlace.geometry.location,
         title: currentPlace.name,
@@ -112,6 +116,18 @@ function ServiceListItem(props) {
       </CardButton>
     );
   } else if (currentPlace && currentPlace.error) {
+    return (
+      <CardButton w="full" p={4} borderColor="red">
+        <Flex textAlign="left" direction="column" align="start">
+          <Text fontSize="md" fontWeight="bold" color="red.600">
+            Error Loading Service
+          </Text>
+          <Text fontSize="sm" w="full">
+            Please contact someone if you expect this to be working.
+          </Text>
+        </Flex>
+      </CardButton>
+    );
   } else if (!currentPlace) {
     return (
       <CardButton w="full" p={4}>

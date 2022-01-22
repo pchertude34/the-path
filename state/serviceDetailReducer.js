@@ -23,8 +23,8 @@ export function serviceDetailReducer(state, action) {
       const { placeId, error } = action.payload;
       const updatedServiceMap = { ...state.serviceMap };
       updatedServiceMap[placeId]
-        ? (updatedServiceMap[placeId] = { error })
-        : (updatedServiceMap[placeId].error = error);
+        ? (updatedServiceMap[placeId].error = error)
+        : (updatedServiceMap[placeId] = { error });
 
       return {
         ...state,
