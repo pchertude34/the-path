@@ -16,6 +16,12 @@ Parameters:
     Default: vpc-01ddcd882610d58c3
   DatabaseUrl:
     Type: String
+  Auth0ClientId:
+    Type: String
+  Auth0ClientSecret:
+    Type: String
+  Auth0Domain:
+    Type: String
 
 Mappings:
   Environment:
@@ -155,6 +161,12 @@ Resources:
               Value: production
             - Name: DATABASE_URL
               Value: !Ref DatabaseUrl
+            - Name: AUTH0_CLIENT_ID
+              Value: !Ref Auth0ClientId
+            - Name: AUTH0_CLIENT_SECRET
+              Value: !Ref Auth0ClientSecret
+            - Name: AUTH0_DOMAIN
+              Value: !Ref Auth0Domain
           Essential: true
           Image: !Ref ContainerDefaultImage
           Name: !Sub the-path-${Environment}
