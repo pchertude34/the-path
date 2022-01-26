@@ -22,6 +22,8 @@ Parameters:
     Type: String
   Auth0Domain:
     Type: String
+  NextAuthUrl:
+    Type: String
 
 Mappings:
   Environment:
@@ -167,6 +169,8 @@ Resources:
               Value: !Ref Auth0ClientSecret
             - Name: AUTH0_DOMAIN
               Value: !Ref Auth0Domain
+            - Name: NEXTAUTH_URL
+              Value: !Ref NextAuthUrl
           Essential: true
           Image: !Ref ContainerDefaultImage
           Name: !Sub the-path-${Environment}
