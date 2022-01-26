@@ -92,4 +92,4 @@ jobs:
             Auth0ClientId=${{ secrets.AUTH0_CLIENT_ID }},
             Auth0ClientSecret=${{ secrets.AUTH0_CLIENT_SECRET }},
             Auth0Domain=${{ secrets.AUTH0_DOMAIN }},
-            NextAuthUrl="https://takehepath.org"
+            NextAuthUrl=https://takehepath.org
