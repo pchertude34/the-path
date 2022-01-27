@@ -4,9 +4,8 @@ import AdminLayout from '../../components/AdminLayout';
 
 function AdminHome() {
   const { data: session, status } = useSession();
-  console.log('status', status);
 
-  useEffect(() => {}, [session]);
+  useEffect(() => {}, []);
 
   if (session) {
     return <div>Admin Page</div>;

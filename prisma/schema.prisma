@@ -21,20 +21,20 @@ model Provider {
   email             String?              @db.VarChar(256)
   description       String?              @db.VarChar(256)
   updatedAt         DateTime?            @default(dbgenerated("(curdate())")) @map("updated_at") @db.Date
-  ServiceOnProvider ServiceOnProvider[]
+  serviceOnProvider ServiceOnProvider[]
 }
 
 model Service {
   id                String              @id @db.VarChar(8)
   description       String?             @db.VarChar(256)
-  ServiceOnProvider ServiceOnProvider[]
+  serviceOnProvider ServiceOnProvider[]
 }
 
 model ServiceOnProvider {
   provider_id Int
   service_id  String   @db.VarChar(8)
-  Provider    Provider @relation(fields: [provider_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "provider")
-  Service     Service  @relation(fields: [service_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "service")
+  provider    Provider @relation(fields: [provider_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "provider")
+  service     Service  @relation(fields: [service_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "service")
 
   @@id([provider_id, service_id])
   @@index([service_id], map: "service")
