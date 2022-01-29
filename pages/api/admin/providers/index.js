@@ -31,7 +31,7 @@ const handler = nc({ onError })
       };
     }
 
-    const providers = await prisma.provider.findMany({
+    const providersPromise = prisma.provider.findMany({
       skip: parseInt(from, 10),
       take: parseInt(size, 10),
       ...params,
@@ -44,6 +44,11 @@ const handler = nc({ onError })
       },
     });
 
+    const providerCountPromise = prisma.provider.count();
+
+    // Run the queries in parallel because they are independent of eachother.
+    const [providers, providerCount] = await Promise.all([providersPromise, providerCountPromise]);
+
     // Get rid of the join attributes that prisma makes us use.
     const filteredProviders = providers.map((provider) => {
       const filteredProvider = {
@@ -55,7 +60,14 @@ const handler = nc({ onError })
       return filteredProvider;
     });
 
-    res.json(filteredProviders);
+    const response = {
+      items: filteredProviders,
+      total: providerCount,
+      from: from,
+      size: size,
+    };
+
+    res.json(response);
   });
 
 export default handler;

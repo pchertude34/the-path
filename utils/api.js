@@ -15,3 +15,11 @@ export function getServiceList({ distance, latitude, longitude, serviceType }) {
     })
     .then((response) => response.data);
 }
+
+export function getAdminProviderList({ from, size }) {
+  return axios
+    .get('/api/admin/providers', {
+      params: { from, size },
+    })
+    .then((response) => response.data);
+}
