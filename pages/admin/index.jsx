@@ -3,6 +3,7 @@ import { Box, Tabs, TabList, Tab, TabPanels, TabPanel } from '@chakra-ui/react';
 import { getSession } from 'next-auth/react';
 import AdminLayout from '../../components/AdminLayout';
 import AdminProviderTab from '../../components/AdminProviderTab';
+import AdminServiceTab from '../../components/AdminServiceTab';
 
 function AdminHome() {
   return (
@@ -13,10 +14,12 @@ function AdminHome() {
           <Tab>Service Types</Tab>
         </TabList>
         <TabPanels>
-          <TabPanel>
+          <TabPanel p={{ base: 0, md: 4 }}>
             <AdminProviderTab />
           </TabPanel>
-          <TabPanel>Service Types</TabPanel>
+          <TabPanel p={{ base: 0, md: 4 }}>
+            <AdminServiceTab />
+          </TabPanel>
         </TabPanels>
       </Tabs>
     </Box>

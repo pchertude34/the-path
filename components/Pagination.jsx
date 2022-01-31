@@ -4,7 +4,6 @@ import { Button, HStack } from '@chakra-ui/react';
 import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
 
 function Pagination(props) {
-  console.log('props', props);
   const { currentPage, pageSize, totalItems, updateCurrentPage, ...rest } = props;
   const lastPage = Math.ceil(totalItems / pageSize) || 1;
 

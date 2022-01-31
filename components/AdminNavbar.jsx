@@ -16,8 +16,6 @@ import { useSession, signOut } from 'next-auth/react';
 export default function WithSubnavigation() {
   const { data: session, status } = useSession();
 
-  console.log('session in navbar', session);
-
   return (
     <Box>
       <Flex

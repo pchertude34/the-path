@@ -84,7 +84,6 @@ function ServiceListItem(props) {
     let marker;
 
     if (currentPlace && !currentPlace.error && map) {
-      console.log('adding marker');
       marker = new google.maps.Marker({
         position: currentPlace.geometry.location,
         title: currentPlace.name,

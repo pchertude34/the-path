@@ -6,7 +6,7 @@ function AdminProviderTable(props) {
   const { items, ...rest } = props;
 
   return (
-    <Table variant={'striped'} overflow="auto" {...rest}>
+    <Table variant={'striped'} {...rest}>
       <Thead>
         <Tr>
           <Th>Name</Th>

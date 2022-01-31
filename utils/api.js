@@ -23,3 +23,11 @@ export function getAdminProviderList({ from, size }) {
     })
     .then((response) => response.data);
 }
+
+export function getAdminServiceTypeList({ from, size }) {
+  return axios
+    .get('/api/admin/services', {
+      params: { from, size },
+    })
+    .then((response) => response.data);
+}
