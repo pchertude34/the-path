@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useRouter } from 'next/router';
 import { Box, Table, Thead, Tbody, Tr, Th, Td, Text } from '@chakra-ui/react';
 
 function AdminProviderTable(props) {
   const { items, ...rest } = props;
 
   return (
-    <Table variant={'striped'} {...rest}>
+    <Table {...rest}>
       <Thead>
         <Tr>
           <Th>Name</Th>
@@ -27,10 +28,15 @@ function AdminProviderTable(props) {
 AdminProviderTable.propTypes = {};
 
 function AdminProviderTableItem(props) {
-  const { name, street, state, zip } = props;
+  const { id, name, street, state, zip } = props;
+  const router = useRouter();
 
   return (
-    <Tr>
+    <Tr
+      _hover={{ bg: 'primary.50' }}
+      cursor="pointer"
+      onClick={() => router.push(`/admin/provider/${id}`)}
+    >
       <Td>
         <Text fontWeight="semibold">{name}</Text>
       </Td>

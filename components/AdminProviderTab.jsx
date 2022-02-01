@@ -15,11 +15,14 @@ function AdminProviderTab() {
 
   const { isLoading, isError, isFetching, data, error } = useQuery(
     ['admin-providers', from],
-    async () => {
-      const data = await getAdminProviderList({ from, size: query.DEFAULT_SIZE });
+    // Signal is used to cancel requests on page change
+    // https://react-query.tanstack.com/guides/query-cancellation#using-axios
+    async ({ signal }) => {
+      const data = await getAdminProviderList({ from, size: query.DEFAULT_SIZE, signal });
       setTotalItems(data.total);
       return data;
-    }
+    },
+    { keepPreviousData: true }
   );
 
   return (

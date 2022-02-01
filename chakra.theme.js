@@ -10,10 +10,16 @@ const customTheme = extendTheme({
   },
   colors: {
     primary: {
+      50: '#F7B7B6',
+      100: '#F5A5A3',
+      200: '#F39291',
       300: '#F1807E',
       400: '#EF6F6C',
       500: '#ED5C5A',
       600: '#EB4A47',
+      700: '#E93835',
+      800: '#E72623',
+      900: '#DC1C18',
     },
     secondary: {
       400: '#F8E8C9',

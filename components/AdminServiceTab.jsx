@@ -17,7 +17,9 @@ function AdminServiceTab() {
 
   const { isLoading, isError, isFetching, data, error } = useQuery(
     ['admin-services', from],
-    async () => {
+    // Signal is used to cancel requests on page change
+    // https://react-query.tanstack.com/guides/query-cancellation#using-axios
+    async ({ signal }) => {
       const data = await getAdminServiceTypeList({ from, size: query.DEFAULT_SIZE });
       setTotalItems(data.total);
       return data;
