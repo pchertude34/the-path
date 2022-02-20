@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { Box, Table, Thead, Tbody, Tr, Th, Td, Text } from '@chakra-ui/react';
 
 function AdminProviderTable(props) {
-  const { items, ...rest } = props;
+  const { items, isLoading, ...rest } = props;
 
   return (
     <Table {...rest}>
