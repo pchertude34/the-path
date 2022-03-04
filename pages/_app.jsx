@@ -1,6 +1,7 @@
 import { ChakraProvider, CSSReset } from '@chakra-ui/react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { SessionProvider as SessionProvider } from 'next-auth/react';
+import Script from 'next/script';
 import SiteLayout from '../components/SiteLayout';
 import theme from '../chakra.theme';
 
@@ -24,6 +25,10 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
       <QueryClientProvider client={queryClient}>
         <CSSReset config={config} />
         <SessionProvider session={session}>
+          <Script
+            src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_API_KEY}&libraries=places`}
+            strategy="beforeInteractive"
+          ></Script>
           <Layout>
             <Component {...pageProps} />
           </Layout>

@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Box, Button, FormControl, Flex, FormLabel, Input, Text } from '@chakra-ui/react';
 import { MdLocationOn } from 'react-icons/md';
+import PlaceSearch from './PlaceSearch';
 
 function LocationInput(props) {
   const { label, placeholder, onLocationChange } = props;
@@ -9,27 +10,6 @@ function LocationInput(props) {
   const [longitude, setLongitude] = useState();
   const [isInvalid, setIsInvalid] = useState();
   const [isCalculatingLocation, setIsCalculatingLocation] = useState(false);
-  const addressInputRef = useRef();
-
-  useEffect(() => {
-    // Initialize the google places autocomplete on the address input.
-    const autocomplete = new google.maps.places.Autocomplete(addressInputRef.current, {
-      componentRestrictions: { country: ['us'] },
-      fields: ['address_components', 'geometry', 'name'],
-      types: ['address'],
-    });
-
-    // Setup a listener on the address input to query for places whenever the user
-    // changes the text.
-    autocomplete.addListener('place_changed', () => {
-      const place = autocomplete.getPlace();
-      const latitude = place.geometry?.location.lat();
-      const longitude = place.geometry?.location.lng();
-
-      setLatitude(latitude || null);
-      setLongitude(longitude || null);
-    });
-  }, [onLocationChange]);
 
   useEffect(() => {
     if (latitude !== undefined && longitude !== undefined) {
@@ -37,6 +17,11 @@ function LocationInput(props) {
       setIsInvalid(!Boolean(latitude) && !Boolean(longitude));
     }
   }, [latitude, longitude, onLocationChange]);
+
+  function handlePlaceChange(place) {
+    setLatitude(place.geometry?.location.lat() || null);
+    setLongitude(place.geometry?.location.lng() || null);
+  }
 
   /**
    * Use native browser functionality to calculate the user's current coordinates.
@@ -56,7 +41,7 @@ function LocationInput(props) {
   return (
     <React.Fragment>
       <FormControl mb={4}>
-        <FormLabel>{label}</FormLabel>
+        {/* <FormLabel>{label}</FormLabel>
         <Input
           ref={addressInputRef}
           isInvalid={isInvalid}
@@ -68,7 +53,14 @@ function LocationInput(props) {
           <Text fontSize="sm" textColor="red" ml={2}>
             Address could not be found.
           </Text>
-        )}
+        )} */}
+        <PlaceSearch
+          label={label}
+          placeholder={placeholder}
+          isInvalid={isInvalid}
+          isDisabled={isCalculatingLocation}
+          onPlaceChange={handlePlaceChange}
+        />
       </FormControl>
       <Flex display={{ base: 'block', md: 'flex' }}>
         <Button
