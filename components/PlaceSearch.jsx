@@ -36,7 +36,7 @@ function PlaceSearch(props) {
       const place = autocomplete.getPlace();
       onPlaceChange(place);
     });
-  }, [placeTypes, onPlaceChange]);
+  }, []);
 
   return (
     <FormControl {...rest} isInvalid={isInvalid}>
