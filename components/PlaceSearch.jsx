@@ -1,6 +1,13 @@
 import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { FormControl, FormLabel, Input, Text } from '@chakra-ui/react';
+import {
+  FormControl,
+  FormLabel,
+  FormHelperText,
+  FormErrorMessage,
+  Input,
+  Text,
+} from '@chakra-ui/react';
 
 function PlaceSearch(props) {
   const {
@@ -9,6 +16,7 @@ function PlaceSearch(props) {
     isDisabled,
     isInvalid,
     placeholder,
+    helpText,
     label,
     ...rest
   } = props;
@@ -31,7 +39,7 @@ function PlaceSearch(props) {
   }, [placeTypes, onPlaceChange]);
 
   return (
-    <FormControl {...rest}>
+    <FormControl {...rest} isInvalid={isInvalid}>
       {label && <FormLabel>{label}</FormLabel>}
       <Input
         ref={addressInputRef}
@@ -40,10 +48,11 @@ function PlaceSearch(props) {
         placeholder={placeholder}
         bg="white"
       />
-      {isInvalid && (
-        <Text fontSize="sm" textColor="red" ml={2}>
-          Address could not be found.
-        </Text>
+      <FormErrorMessage>Address could not be found.</FormErrorMessage>
+      {helpText && (
+        <FormHelperText fontSize="xs" p={2}>
+          {helpText}
+        </FormHelperText>
       )}
     </FormControl>
   );
@@ -55,6 +64,7 @@ PlaceSearch.propTypes = {
   isDisabled: PropTypes.bool,
   isInvalid: PropTypes.bool,
   placeholder: PropTypes.string,
+  helpText: PropTypes.string,
   label: PropTypes.string,
 };
 

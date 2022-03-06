@@ -121,15 +121,11 @@ function AdminProviderForm(props) {
           <Box>
             <PlaceSearch
               label="Search for a Place"
+              helpText="Use this field to search google places to find providers. We use google places to populate most of the information for The Path users including the address and name. Please verify that the entered place is indeed the provider you are trying to add."
               placeholder="Search for a place by Address or Name"
               onPlaceChange={handlePlaceChange}
               placeTypes={['establishment']}
             />
-            <Text fontSize="xs" p={2}>
-              Use this field to search google places to find providers. We use google places to
-              populate most of the information for The Path users including the address and name.
-              Please verify that the entered place is indeed the provider you are trying to add.
-            </Text>
           </Box>
 
           <FormControl isInvalid={formik.errors.placeId} isRequired>
