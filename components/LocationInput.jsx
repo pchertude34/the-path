@@ -40,28 +40,15 @@ function LocationInput(props) {
 
   return (
     <React.Fragment>
-      <FormControl mb={4}>
-        {/* <FormLabel>{label}</FormLabel>
-        <Input
-          ref={addressInputRef}
-          isInvalid={isInvalid}
-          disabled={isCalculatingLocation}
-          placeholder={placeholder}
-          bg="white"
-        />
-        {isInvalid && (
-          <Text fontSize="sm" textColor="red" ml={2}>
-            Address could not be found.
-          </Text>
-        )} */}
-        <PlaceSearch
-          label={label}
-          placeholder={placeholder}
-          isInvalid={isInvalid}
-          isDisabled={isCalculatingLocation}
-          onPlaceChange={handlePlaceChange}
-        />
-      </FormControl>
+      <PlaceSearch
+        mb={4}
+        label={label}
+        placeholder={placeholder}
+        isInvalid={isInvalid}
+        isDisabled={isCalculatingLocation}
+        onPlaceChange={handlePlaceChange}
+      />
+
       <Flex display={{ base: 'block', md: 'flex' }}>
         <Button
           leftIcon={<MdLocationOn />}

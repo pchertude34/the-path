@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Box, Flex, Text, SkeletonText } from '@chakra-ui/react';
+import { serviceDetailTypes, useServiceDetailContext } from '../state';
+import { buildPlaceAddress, convertMetersToMiles } from '../utils/utils';
+
 import CardButton from './CardButton';
 import BusinessStatusLabel from './BusinessStatusLabel';
-import { serviceDetailTypes, useServiceDetailContext } from '../state';
-import { convertMetersToMiles } from '../utils/utils';
 
 function ServiceListItem(props) {
   const { place_id, active, distance, map, onClick } = props;
@@ -33,36 +34,7 @@ function ServiceListItem(props) {
       const service = new google.maps.places.PlacesService(map);
       service.getDetails(request, (place, status) => {
         if (status === 'OK') {
-          let address1 = '';
-          let city = '';
-          let state = '';
-          let postcode = '';
-
-          for (const component of place.address_components) {
-            const componentType = component.types[0];
-
-            switch (componentType) {
-              case 'street_number':
-                address1 = `${component.long_name} ${address1}`;
-                break;
-              case 'route':
-                address1 += component.short_name;
-                break;
-              case 'postal_code':
-                postcode = `${component.long_name}${postcode}`;
-                break;
-              case 'postal_code_suffix':
-                postcode = `${postcode}-${component.long_name}`;
-                break;
-              case 'locality':
-                city = component.long_name;
-                break;
-              case 'administrative_area_level_1':
-                state = component.short_name;
-            }
-          }
-
-          const address = `${address1}, ${city}, ${state} ${postcode}`;
+          const address = buildPlaceAddress(place);
 
           dispatch({
             type: serviceDetailTypes.ADD_SERVICE,
@@ -93,9 +65,7 @@ function ServiceListItem(props) {
     }
 
     return () => {
-      if (marker) {
-        marker.setMap(null);
-      }
+      if (marker) marker.setMap(null);
     };
   }, [currentPlace, map, onClick]);
 

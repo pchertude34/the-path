@@ -3,27 +3,35 @@ import PropTypes from 'prop-types';
 import { FormControl, FormLabel, Input, Text } from '@chakra-ui/react';
 
 function PlaceSearch(props) {
-  const { onPlaceChange, isDisabled, isInvalid, placeholder, label } = props;
+  const {
+    onPlaceChange,
+    placeTypes = ['address'],
+    isDisabled,
+    isInvalid,
+    placeholder,
+    label,
+    ...rest
+  } = props;
   const addressInputRef = useRef();
 
   useEffect(() => {
     // Initialize the google places autocomplete on the address input.
     const autocomplete = new google.maps.places.Autocomplete(addressInputRef.current, {
       componentRestrictions: { country: ['us'] },
-      fields: ['address_components', 'geometry', 'name'],
-      types: ['address'],
+      fields: ['address_components', 'geometry', 'name', 'place_id'],
+      types: placeTypes,
     });
 
     // Setup a listener on the address input to query for places whenever the user
     // changes the text.
     autocomplete.addListener('place_changed', () => {
       const place = autocomplete.getPlace();
-      onPlaceChange && onPlaceChange(place);
+      onPlaceChange(place);
     });
-  }, [onPlaceChange]);
+  }, [placeTypes, onPlaceChange]);
 
   return (
-    <FormControl mb={4}>
+    <FormControl {...rest}>
       {label && <FormLabel>{label}</FormLabel>}
       <Input
         ref={addressInputRef}
@@ -43,6 +51,7 @@ function PlaceSearch(props) {
 
 PlaceSearch.propTypes = {
   onPlaceChange: PropTypes.func,
+  placeTypes: PropTypes.arrayOf(PropTypes.string),
   isDisabled: PropTypes.bool,
   isInvalid: PropTypes.bool,
   placeholder: PropTypes.string,
