@@ -4,9 +4,6 @@ import PropTypes from 'prop-types';
 import { Formik, Form, Field, FieldArray } from 'formik';
 import * as Yup from 'yup';
 import {
-  Alert,
-  AlertIcon,
-  AlertDescription,
   Box,
   Button,
   Heading,
@@ -19,7 +16,7 @@ import {
   Select,
   Flex,
 } from '@chakra-ui/react';
-import { AddIcon, CloseIcon } from '@chakra-ui/icons';
+import { AddIcon, CloseIcon, ExternalLinkIcon } from '@chakra-ui/icons';
 import { buildPlaceAddress, generateGoogleLink } from '../utils/utils';
 import { getAdminAllServiceTypes } from '../utils/api';
 
@@ -130,57 +127,36 @@ function AdminProviderForm(props) {
                 )}
               </Field>
 
+              <Field name="name">
+                {({ field, form }) => (
+                  <FormControl isInvalid={form.errors.name} isRequired>
+                    <FormLabel htmlFor="name">Name</FormLabel>
+                    <Input
+                      {...field}
+                      id="name"
+                      placeholder="The name of the provider found by google"
+                      disabled
+                      bg="white"
+                    />
+                    <FormErrorMessage>{form.errors.name}</FormErrorMessage>
+                  </FormControl>
+                )}
+              </Field>
+
               <Button
                 as="a"
                 colorScheme="blue"
+                variant="link"
                 href={generateGoogleLink(values.placeId, values.name)}
                 target="_blank"
                 rel="noreferrer noopener"
                 isDisabled={!values.placeId}
+                p={4}
+                rightIcon={<ExternalLinkIcon />}
               >
                 View on Google
               </Button>
             </Stack>
-
-            <Field name="name">
-              {({ field, form }) => (
-                <FormControl isInvalid={form.errors.name} isRequired>
-                  <FormLabel htmlFor="name">Name</FormLabel>
-                  <Input
-                    {...field}
-                    id="name"
-                    bg="white"
-                    isRequired
-                    onChange={(e) => {
-                      updateWarnName(e.target.value);
-                      field.onChange(e);
-                    }}
-                  />
-                  <FormErrorMessage>{form.errors.name}</FormErrorMessage>
-                  {warnName && (
-                    <Alert status="warning" variant="left-accent" borderRadius="md" mt={2}>
-                      <AlertIcon />
-                      <AlertDescription fontSize="sm" lineHeight="xs">
-                        You changed the provider name from what google set! This is okay if you
-                        meant to do it, just make sure you know what you are doing.{' '}
-                        <Button
-                          size="sm"
-                          variant="link"
-                          colorScheme="blue"
-                          onClick={() => {
-                            setFieldValue('name', currentPlace.name);
-                            updateWarnName(currentPlace.name);
-                          }}
-                        >
-                          Click here
-                        </Button>{' '}
-                        to reset the name.
-                      </AlertDescription>
-                    </Alert>
-                  )}
-                </FormControl>
-              )}
-            </Field>
 
             <FieldArray name="serviceTypes">
               {({ remove, push }) => (
@@ -190,7 +166,7 @@ function AdminProviderForm(props) {
                     {values.serviceTypes.map((serviceType, index) => (
                       <Flex key={`${serviceType}-${index}`} alignItems="center">
                         <Field name={`serviceTypes.${index}`}>
-                          {({ field, form }) => (
+                          {({ field }) => (
                             <Select
                               {...field}
                               id={`serviceTypes.${index}`}
@@ -214,13 +190,21 @@ function AdminProviderForm(props) {
                           ml={2}
                           colorScheme="red"
                           p={1}
+                          // Remove the service type at the current index
                           onClick={() => remove(index)}
                         >
                           <CloseIcon />
                         </Button>
                       </Flex>
                     ))}
-                    <Button colorScheme="blue" leftIcon={<AddIcon />} onClick={() => push('')}>
+
+                    <Button
+                      variant="outline"
+                      colorScheme="blue"
+                      leftIcon={<AddIcon />}
+                      // Add a new empty service type to the service array
+                      onClick={() => push('')}
+                    >
                       Add Service Type
                     </Button>
                   </Stack>

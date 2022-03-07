@@ -12,7 +12,7 @@ function CreateProviderPage(props) {
   return (
     <Box mt={8}>
       <AdminBackButton label="Back to Provider List" />
-      <Container maxW="2xl" mt={8}>
+      <Container maxW="2xl" p={0} mt={8}>
         <AdminProviderForm serviceTypes={serviceTypes} onSubmit={() => {}} />
       </Container>
     </Box>
