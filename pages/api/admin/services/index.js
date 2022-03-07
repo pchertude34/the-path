@@ -1,8 +1,8 @@
 import nc from 'next-connect';
 import { PrismaClient } from '@prisma/client';
-import withPermissions from '../../../../middleware/withAdmin';
-import onError from '../../../../middleware/onError';
-import { query } from '../../../../utils/constants';
+import withPermissions from '~/middleware/withAdmin';
+import onError from '~/middleware/onError';
+import { query } from '~/utils/constants';
 
 const prisma = new PrismaClient();
 

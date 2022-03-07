@@ -34,6 +34,10 @@ export function getAdminServiceTypeList({ from, size, signal }) {
     .then((response) => response.data);
 }
 
+export function getAdminAllServiceTypes() {
+  return axios.get('/api/admin/services/all').then((response) => response.data);
+}
+
 export function getAdminProviderById(id) {
   return axios.get(`/api/admin/providers/${id}`).then((response) => response.data);
 }

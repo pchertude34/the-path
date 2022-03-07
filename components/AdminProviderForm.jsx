@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { useQuery } from 'react-query';
 import PropTypes from 'prop-types';
 import { Formik, Form, Field, FieldArray } from 'formik';
 import * as Yup from 'yup';
@@ -20,10 +21,17 @@ import {
 } from '@chakra-ui/react';
 import { AddIcon, CloseIcon } from '@chakra-ui/icons';
 import { buildPlaceAddress, generateGoogleLink } from '../utils/utils';
+import { getAdminAllServiceTypes } from '../utils/api';
 
 import PlaceSearch from './PlaceSearch';
 
-const INITIAL_VALUES = { placeId: '', address: '', name: '', description: '', serviceTypes: [''] };
+const INITIAL_VALUES = {
+  placeId: '',
+  address: '',
+  name: '',
+  description: '',
+  serviceTypes: [''],
+};
 const VALIDATION_SCHEMA = Yup.object().shape({
   placeId: Yup.string().required(
     'Place ID is required! Search for a place to populate the Place ID.'
@@ -40,6 +48,14 @@ function AdminProviderForm(props) {
   const { initialValues, onSubmit } = props;
   const [currentPlace, setCurrentPlace] = useState();
   const [warnName, setWarnName] = useState(false);
+
+  const {
+    isLoading,
+    isError,
+    isFetching,
+    data: serviceTypes,
+    error,
+  } = useQuery(['admin-all-services'], getAdminAllServiceTypes);
 
   // If there is a place selected, warn the user if they change what is put in the name field.
   // We want to warn the user because it's best to keep google place names, but sometimes
@@ -129,7 +145,7 @@ function AdminProviderForm(props) {
             <Field name="name">
               {({ field, form }) => (
                 <FormControl isInvalid={form.errors.name} isRequired>
-                  <FormLabel>Name</FormLabel>
+                  <FormLabel htmlFor="name">Name</FormLabel>
                   <Input
                     {...field}
                     id="name"
@@ -167,19 +183,31 @@ function AdminProviderForm(props) {
             </Field>
 
             <FieldArray name="serviceTypes">
-              {({ insert, remove, push }) => (
+              {({ remove, push }) => (
                 <FormControl>
                   <FormLabel htmlFor="serviceTypes">Service Types</FormLabel>
                   <Stack spacing={2}>
                     {values.serviceTypes.map((serviceType, index) => (
                       <Flex key={`${serviceType}-${index}`} alignItems="center">
-                        <Select
-                          name={`serviceTypes.${index}`}
-                          placeholder="Select a service type"
-                          bg="white"
-                        >
-                          <option value="option1">Option 1</option>
-                        </Select>
+                        <Field name={`serviceTypes.${index}`}>
+                          {({ field, form }) => (
+                            <Select
+                              {...field}
+                              id={`serviceTypes.${index}`}
+                              placeholder="Select a service type"
+                              bg="white"
+                            >
+                              {serviceTypes?.map((serviceType) => (
+                                <option
+                                  key={`service-type-${serviceType.id}`}
+                                  value={serviceType.id}
+                                >
+                                  {serviceType.description}
+                                </option>
+                              ))}
+                            </Select>
+                          )}
+                        </Field>
                         <Button
                           variant="ghost"
                           size="md"
