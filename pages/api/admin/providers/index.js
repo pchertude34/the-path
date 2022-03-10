@@ -1,8 +1,10 @@
 import nc from 'next-connect';
-import { PrismaClient } from '@prisma/client';
-import withPermissions from '../../../../middleware/withAdmin';
-import onError from '../../../../middleware/onError';
-import { query } from '../../../../utils/constants';
+import { PrismaClient, Prisma } from '@prisma/client';
+import withPermissions from '~/middleware/withAdmin';
+import onError from '~/middleware/onError';
+import { query } from '~/utils/constants';
+import { providerSchema } from '~/utils/schema';
+import { ApiError } from '~/utils/error';
 
 const prisma = new PrismaClient();
 
@@ -68,6 +70,65 @@ const handler = nc({ onError })
     };
 
     res.json(response);
+  })
+  .post(async function createProvider(req, res) {
+    const { body } = req;
+
+    // validate the data coming being loaded in so we can return any specific errors to the frontend.
+    const providerData = await providerSchema.validate(body, {
+      abortEarly: true,
+      stripUnknown: true,
+    });
+
+    // Make sure the current provider doesn't already exist by checking the placeId in the database.
+    const existingProvider = await prisma.provider.findFirst({
+      where: {
+        placeId: providerData.placeId,
+      },
+    });
+
+    // TODO: Remove this once we change schema to have unique placeIds
+    // Throw an error if a provider with that place exists already.
+    if (existingProvider) {
+      throw new ApiError(`Provider with placeId ${providerData.placeId} already exists!`, 400);
+    }
+
+    // Because we Prisma doesn't support the "Geom" type in MySQL, we cannot use .create or .update and
+    // we need to do so manually using raw queries.
+    const location = `ST_GeomFromText('POINT(${providerData.latitude} ${providerData.longitude})', 4326)`;
+    const createProviderQuery = Prisma.sql`
+        INSERT INTO \`the-path\`.Provider (place_id, name, description, location) 
+        VALUES (${providerData.placeId}, ${providerData.name}, ${
+      providerData.description
+    }, ${Prisma.raw(location)});
+      `;
+    await prisma.$executeRaw(createProviderQuery);
+
+    // Now we need to query the provider we just created, since prisma raw query executes dont'
+    // return the created entry.
+    // We need this for joining the services.
+    const newlyCreatedProvider = await prisma.provider.findFirst({
+      where: {
+        placeId: providerData.placeId,
+      },
+    });
+
+    providerData.serviceTypes.forEach(async (serviceType) => {
+      // We want to issolate the errors for all of the services here
+      // since we don't want one failed service join to ruin the whole query.
+      try {
+        const serviceJoinQuery = Prisma.sql`
+            INSERT INTO \`the-path\`.ServiceOnProvider
+            VALUES (${newlyCreatedProvider.id}, ${serviceType})
+          `;
+        await prisma.$executeRaw(serviceJoinQuery);
+      } catch (error) {
+        // TODO: deal with errors here
+        console.error(error);
+      }
+    });
+
+    res.status(201).send();
   });
 
 export default handler;

@@ -25,6 +25,10 @@ export function getAdminProviderList({ from, size, signal }) {
     .then((response) => response.data);
 }
 
+export function createAdminProvider(body) {
+  return axios.post('/api/admin/providers', body).then((response) => response.data);
+}
+
 export function getAdminServiceTypeList({ from, size, signal }) {
   return axios
     .get('/api/admin/services', {

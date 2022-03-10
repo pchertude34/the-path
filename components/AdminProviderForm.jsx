@@ -54,17 +54,18 @@ function AdminProviderForm(props) {
     error,
   } = useQuery(['admin-all-services'], getAdminAllServiceTypes);
 
-  // If there is a place selected, warn the user if they change what is put in the name field.
-  // We want to warn the user because it's best to keep google place names, but sometimes
-  // the place names can be unnecissarily long.
-  function updateWarnName(nameValue) {
-    if (currentPlace) setWarnName(currentPlace.name !== nameValue);
-    else setWarnName(false);
-  }
-
-  function handleSubmit(values) {
-    console.log('FORM SUBMITTED');
-    console.log('values', values);
+  /**
+   * Handler for submitting the form.
+   * @param {object} values The form values submitted. See INITIAL_VALUES for the schema.
+   */
+  async function handleSubmit(values) {
+    // Errors for this function should be handled in the parent component.
+    // It makes it easier to customize error responses.
+    await onSubmit({
+      ...values,
+      latitude: currentPlace.geometry.location.lat(),
+      longitude: currentPlace.geometry.location.lng(),
+    });
   }
 
   return (

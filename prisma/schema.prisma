@@ -10,6 +10,7 @@ datasource db {
 
 model Provider {
   id                Int                  @id @default(autoincrement())
+  placeId           String               @map("place_id") @db.VarChar(1042)
   name              String               @db.VarChar(256)
   location          Unsupported("point")
   undisclosed       Boolean?             @default(false)
@@ -20,7 +21,7 @@ model Provider {
   website           String?              @db.VarChar(126)
   email             String?              @db.VarChar(256)
   description       String?              @db.VarChar(256)
-  updatedAt         DateTime?            @default(dbgenerated("(curdate())")) @map("updated_at") @db.Date
+  updatedAt         DateTime?            @default(now()) @map("updated_at") @db.DateTime(0)
   serviceOnProvider ServiceOnProvider[]
 }
 

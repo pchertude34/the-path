@@ -52,8 +52,6 @@ fs.createReadStream(filePath)
         );
         const placeId = googlePlace.data?.candidates[0]?.place_id;
 
-        // console.log(`placeId`, placeId);
-
         const location = `ST_GeomFromText('POINT(${lat} ${long})', 4326)`;
         var query1 = `INSERT INTO \`the-path\`.Provider VALUES (${id}, "${placeId}", "${name}", ${location}, ${undisclosed}, ${spanish}, "${street}", "${city}", "${zip}", "${website}", "${email}", "${description}", ${null});`;
         await prisma.$executeRawUnsafe(query1);
