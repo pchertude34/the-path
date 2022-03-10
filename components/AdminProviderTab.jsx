@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import NextLink from 'next/link';
 import { useQuery } from 'react-query';
 import { Box, Button, Flex, Heading, Input } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
@@ -31,9 +32,18 @@ function AdminProviderTab() {
         <Heading as="h1" mb={4} align="left">
           Providers
         </Heading>
-        <Button variant="outline" colorScheme="primary" bg="white" leftIcon={<AddIcon />} ml="auto">
-          Add Provider
-        </Button>
+        <NextLink href="/admin/provider/create" passHref>
+          <Button
+            as="a"
+            variant="outline"
+            colorScheme="primary"
+            bg="white"
+            leftIcon={<AddIcon />}
+            ml="auto"
+          >
+            Add Provider
+          </Button>
+        </NextLink>
       </Flex>
       <Flex mb={4}>
         <Input placeholder="Search by name or address" maxW="400px" bg="white" />

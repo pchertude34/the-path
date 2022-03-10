@@ -19,7 +19,7 @@ function ProviderPage(props) {
 
   return (
     <Box mt={4}>
-      <AdminBackButton label="Back to Provider List" />
+      <AdminBackButton label="Back to Provider List" href="/admin" />
       <Box mt={4} borderRadius="md" p={{ base: 4, md: 8 }} bg="gray.50">
         {data?.name}
       </Box>

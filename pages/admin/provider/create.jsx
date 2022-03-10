@@ -6,6 +6,7 @@ import { createAdminProvider } from '~/utils/api';
 
 import AdminBackButton from '~/components/AdminBackButton';
 import AdminProviderForm from '~/components/AdminProviderForm';
+import AdminLayout from '~/components/AdminLayout';
 
 function CreateProviderPage() {
   const toast = useToast();
@@ -37,7 +38,7 @@ function CreateProviderPage() {
 
   return (
     <Box mt={8}>
-      <AdminBackButton label="Back to Provider List" />
+      <AdminBackButton label="Back to Provider List" href="/admin" />
       <Container maxW="2xl" p={0} mt={8}>
         <AdminProviderForm onSubmit={handleFormSubmit} />
       </Container>
@@ -60,4 +61,5 @@ export async function getServerSideProps({ req }) {
   return { props: {} };
 }
 
+CreateProviderPage.layout = AdminLayout;
 export default CreateProviderPage;
