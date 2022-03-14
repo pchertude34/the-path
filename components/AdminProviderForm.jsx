@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState } from 'react';
 import { useQuery } from 'react-query';
 import PropTypes from 'prop-types';
 import { Formik, Form, Field, FieldArray } from 'formik';
@@ -6,7 +6,6 @@ import * as Yup from 'yup';
 import {
   Box,
   Button,
-  Heading,
   Input,
   FormControl,
   FormErrorMessage,
@@ -42,9 +41,13 @@ const VALIDATION_SCHEMA = Yup.object().shape({
 });
 
 function AdminProviderForm(props) {
-  const { initialValues, onSubmit } = props;
+  const {
+    initialValues = INITIAL_VALUES,
+    onSubmit,
+    showPlaceSearch = true,
+    submitButtonText = 'Add Provider',
+  } = props;
   const [currentPlace, setCurrentPlace] = useState();
-  const [warnName, setWarnName] = useState(false);
 
   const {
     isLoading,
@@ -59,6 +62,7 @@ function AdminProviderForm(props) {
    * @param {object} values The form values submitted. See INITIAL_VALUES for the schema.
    */
   async function handleSubmit(values) {
+    console.log('values', values);
     // Errors for this function should be handled in the parent component.
     // It makes it easier to customize error responses.
     await onSubmit({
@@ -70,7 +74,7 @@ function AdminProviderForm(props) {
 
   return (
     <Formik
-      initialValues={{ ...INITIAL_VALUES, initialValues }}
+      initialValues={initialValues}
       onSubmit={handleSubmit}
       validationSchema={VALIDATION_SCHEMA}
       validateOnBlur={false}
@@ -79,22 +83,22 @@ function AdminProviderForm(props) {
       {({ values, setFieldValue }) => (
         <Form>
           <Stack spacing={4}>
-            <Heading as="h1">Add a Provider</Heading>
-
             <Stack p={4} borderRadius="md" bg="gray.100">
               <Box>
-                <PlaceSearch
-                  label="Search for a Place"
-                  helpText="Use this field to search google places to find providers. We use google places to populate most of the information for The Path users including the address and name. Please verify that the entered place is indeed the provider you are trying to add."
-                  placeholder="Search for a place by Address or Name"
-                  onPlaceChange={(place) => {
-                    setFieldValue('placeId', place.place_id);
-                    setFieldValue('address', buildPlaceAddress(place));
-                    setFieldValue('name', place.name);
-                    setCurrentPlace(place);
-                  }}
-                  placeTypes={['establishment']}
-                />
+                {showPlaceSearch && (
+                  <PlaceSearch
+                    label="Search for a Place"
+                    helpText="Use this field to search google places to find providers. We use google places to populate most of the information for The Path users including the address and name. Please verify that the entered place is indeed the provider you are trying to add."
+                    placeholder="Search for a place by Address or Name"
+                    onPlaceChange={(place) => {
+                      setFieldValue('placeId', place.place_id);
+                      setFieldValue('address', buildPlaceAddress(place));
+                      setFieldValue('name', place.name);
+                      setCurrentPlace(place);
+                    }}
+                    placeTypes={['establishment']}
+                  />
+                )}
               </Box>
               <Field name="placeId">
                 {({ field, form }) => (
@@ -164,7 +168,7 @@ function AdminProviderForm(props) {
                 <FormControl>
                   <FormLabel htmlFor="serviceTypes">Service Types</FormLabel>
                   <Stack spacing={2}>
-                    {values.serviceTypes.map((serviceType, index) => (
+                    {values.serviceTypes?.map((serviceType, index) => (
                       <Flex key={`${serviceType}-${index}`} alignItems="center">
                         <Field name={`serviceTypes.${index}`}>
                           {({ field }) => (
@@ -222,7 +226,7 @@ function AdminProviderForm(props) {
               )}
             </Field>
             <Button type="submit" colorScheme="primary">
-              Add Provider
+              {submitButtonText}
             </Button>
           </Stack>
         </Form>
@@ -232,8 +236,15 @@ function AdminProviderForm(props) {
 }
 
 AdminProviderForm.propTypes = {
-  initialValues: PropTypes.shape({}),
+  initialValues: PropTypes.shape({
+    name: PropTypes.string,
+    address: PropTypes.string,
+    serviceType: PropTypes.arrayOf(PropTypes.string),
+    description: PropTypes.string,
+  }),
   onSubmit: PropTypes.func.isRequired,
+  showPlaceSearch: PropTypes.bool,
+  submitButtonText: PropTypes.string,
 };
 
 export default AdminProviderForm;

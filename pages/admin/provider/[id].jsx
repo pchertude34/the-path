@@ -1,30 +1,60 @@
 import React from 'react';
-import { useRouter } from 'next/router';
-import { useQuery } from 'react-query';
-import { Box } from '@chakra-ui/react';
-import { getAdminProviderById } from '../../../utils/api';
-import AdminBackButton from '../../../components/AdminBackButton';
+import { getSession } from 'next-auth/react';
+import { PrismaClient } from '@prisma/client';
+import { Box, Container, Heading } from '@chakra-ui/react';
+
+import AdminBackButton from '~/components/AdminBackButton';
+import AdminLayout from '~/components/AdminLayout';
+import AdminProviderForm from '~/components/AdminProviderForm';
 
 function ProviderPage(props) {
-  const router = useRouter();
-  const { id } = router.query;
+  const { provider } = props;
 
-  console.log('id', id);
-
-  const { isLoading, isError, isFetching, data, error } = useQuery(['admin-providers', id], () =>
-    getAdminProviderById(id)
-  );
-
-  console.log('data', data);
+  const initialValues = {
+    placeId: provider.placeId,
+    name: provider.name,
+    address: provider.address,
+    serviceTypes: provider.serviceTypes,
+    description: provider.description,
+  };
 
   return (
     <Box mt={4}>
       <AdminBackButton label="Back to Provider List" href="/admin" />
-      <Box mt={4} borderRadius="md" p={{ base: 4, md: 8 }} bg="gray.50">
-        {data?.name}
-      </Box>
+      <Container maxW="2xl" p={0} mt={8}>
+        <Heading as="h1" mb={4}>
+          {provider.name}
+        </Heading>
+        <AdminProviderForm
+          showPlaceSearch={false}
+          initialValues={initialValues}
+          onSubmit={() => {}}
+        />
+      </Container>
     </Box>
   );
 }
 
+export async function getServerSideProps({ req, params }) {
+  const session = await getSession({ req });
+  const prisma = new PrismaClient();
+  const { id } = params;
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/api/auth/signin',
+        statusCode: 302,
+      },
+    };
+  }
+
+  const provider = await prisma.provider.findUnique({
+    where: { id: parseInt(id, 10) },
+  });
+
+  return { props: { provider: JSON.parse(JSON.stringify(provider)) } };
+}
+
+ProviderPage.layout = AdminLayout;
 export default ProviderPage;

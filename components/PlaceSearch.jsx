@@ -46,6 +46,11 @@ function PlaceSearch(props) {
         isInvalid={isInvalid}
         isDisabled={isDisabled}
         placeholder={placeholder}
+        // Prevent using the Enter key to select a place from causing default actions
+        // such as form submitting from parent components.
+        onKeyPress={(e) => {
+          e.key === 'Enter' && e.preventDefault();
+        }}
         bg="white"
       />
       <FormErrorMessage>Address could not be found.</FormErrorMessage>

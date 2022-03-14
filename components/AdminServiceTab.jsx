@@ -37,12 +37,7 @@ function AdminServiceTab() {
         </Button>
       </Flex>
       <Box overflow="scroll">
-        <AdminServiceTable
-          items={data?.items}
-          isLoading={isLoading}
-          pageSize={query.DEFAULT_SIZE}
-          mb={4}
-        />
+        <AdminServiceTable items={data?.items} isLoading={isLoading} mb={4} />
       </Box>
       <Pagination
         currentPage={currentPage}

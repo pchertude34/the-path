@@ -1,6 +1,6 @@
 import React from 'react';
 import { getSession } from 'next-auth/react';
-import { Box, Container, useToast } from '@chakra-ui/react';
+import { Box, Container, Heading, useToast } from '@chakra-ui/react';
 
 import { createAdminProvider } from '~/utils/api';
 
@@ -40,6 +40,9 @@ function CreateProviderPage() {
     <Box mt={8}>
       <AdminBackButton label="Back to Provider List" href="/admin" />
       <Container maxW="2xl" p={0} mt={8}>
+        <Heading as="h1" mb={4}>
+          Add a Provider
+        </Heading>
         <AdminProviderForm onSubmit={handleFormSubmit} />
       </Container>
     </Box>

@@ -49,12 +49,7 @@ function AdminProviderTab() {
         <Input placeholder="Search by name or address" maxW="400px" bg="white" />
       </Flex>
       <Box overflow="scroll">
-        <AdminProviderTable
-          items={data?.items}
-          isLoading={isLoading}
-          pageSize={query.DEFAULT_SIZE}
-          mb={4}
-        />
+        <AdminProviderTable items={data?.items} isLoading={isLoading} mb={4} />
       </Box>
       <Pagination
         currentPage={currentPage}
