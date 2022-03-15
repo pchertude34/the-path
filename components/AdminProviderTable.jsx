@@ -1,10 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useRouter } from 'next/router';
-import { Box, Table, Thead, Tbody, Tr, Th, Td, Text } from '@chakra-ui/react';
+import { Table, Thead, Tbody, Tr, Th, Td, Text } from '@chakra-ui/react';
+import { query } from '../utils/constants';
 import LoadingRows from './LoadingRows';
-
-const LOADING_ROW_COUNT = 25;
 
 function AdminProviderTable(props) {
   const { items, isLoading, ...rest } = props;
@@ -23,7 +22,7 @@ function AdminProviderTable(props) {
         {isLoading ? (
           // I'm just going to hardcode the col count here since it coresponds to the number of Th elements in the table.
           // We don't ever need this to change here unless we update the table headers.
-          <LoadingRows tableId="provider" colCount={4} rowCount={LOADING_ROW_COUNT} />
+          <LoadingRows tableId="provider" colCount={4} rowCount={query.DEFAULT_SIZE} />
         ) : (
           items?.map((provider) => <AdminProviderTableItem key={provider.id} {...provider} />)
         )}

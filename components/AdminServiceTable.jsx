@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Box, Table, Thead, Tbody, Tr, Th, Td, Text } from '@chakra-ui/react';
+import { query } from '../utils/constants';
+import LoadingRows from './LoadingRows';
 
 function AdminServiceTable(props) {
   const { items, isLoading, ...rest } = props;
@@ -14,9 +16,12 @@ function AdminServiceTable(props) {
         </Tr>
       </Thead>
       <Tbody>
-        {items?.map((service) => (
-          <AdminServiceTableItem key={service.id} {...service} />
-        ))}
+        {isLoading ? (
+          // query.DEFAULT_SIZE is the number of rows we load by default
+          <LoadingRows tableId="services" colCount={2} rowCount={query.DEFAULT_SIZE} />
+        ) : (
+          items?.map((service) => <AdminServiceTableItem key={service.id} {...service} />)
+        )}
       </Tbody>
     </Table>
   );
@@ -38,5 +43,7 @@ function AdminServiceTableItem(props) {
     </Tr>
   );
 }
+
+AdminServiceTable.propTypes = {};
 
 export default AdminServiceTable;
