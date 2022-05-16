@@ -45,3 +45,7 @@ export function getAdminAllServiceTypes() {
 export function getAdminProviderById(id) {
   return axios.get(`/api/admin/providers/${id}`).then((response) => response.data);
 }
+
+export function deleteAdminProviderById(id) {
+  return axios.delete(`/api/admin/providers/${id}`).then((respones) => respones.data);
+}

@@ -10,13 +10,19 @@ const handler = nc({ onError })
   .get(async function getProviderById(req, res) {
     const { id } = req.query;
 
-    // console.log('req.params', req.params);
-
     const provider = await prisma.provider.findUnique({
       where: { id: parseInt(id, 10) },
     });
 
     res.json(provider);
-  });
+  })
+  .delete(async function deleteProviderById(req, res) {
+    const { id } = req.query;
 
+    await prisma.provider.delete({
+      where: { id: parseInt(id, 10) },
+    });
+
+    res.send();
+  });
 export default handler;
