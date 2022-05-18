@@ -97,8 +97,8 @@ const handler = nc({ onError })
     // we need to do so manually using raw queries.
     const location = `ST_GeomFromText('POINT(${providerData.latitude} ${providerData.longitude})', 4326)`;
     const createProviderQuery = Prisma.sql`
-        INSERT INTO \`the-path\`.Provider (place_id, name, description, location) 
-        VALUES (${providerData.placeId}, ${providerData.name}, ${
+        INSERT INTO \`the-path\`.Provider (place_id, address, name, description, location) 
+        VALUES (${providerData.placeId}, ${providerData.address}, ${providerData.name}, ${
       providerData.description
     }, ${Prisma.raw(location)});
       `;

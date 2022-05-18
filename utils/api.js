@@ -25,10 +25,6 @@ export function getAdminProviderList({ from, size, signal }) {
     .then((response) => response.data);
 }
 
-export function createAdminProvider(body) {
-  return axios.post('/api/admin/providers', body).then((response) => response.data);
-}
-
 export function getAdminServiceTypeList({ from, size, signal }) {
   return axios
     .get('/api/admin/services', {
@@ -42,8 +38,17 @@ export function getAdminAllServiceTypes() {
   return axios.get('/api/admin/services/all').then((response) => response.data);
 }
 
+// ADMIN PROVIDER FUNCTIONS
+export function createAdminProvider(body) {
+  return axios.post('/api/admin/providers', body).then((response) => response.data);
+}
+
 export function getAdminProviderById(id) {
   return axios.get(`/api/admin/providers/${id}`).then((response) => response.data);
+}
+
+export function updateAdminProviderById(id, body) {
+  return axios.put(`/api/admin/providers/${id}`, body).then((response) => response.body);
 }
 
 export function deleteAdminProviderById(id) {

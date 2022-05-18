@@ -62,14 +62,21 @@ function AdminProviderForm(props) {
    * @param {object} values The form values submitted. See INITIAL_VALUES for the schema.
    */
   async function handleSubmit(values) {
-    console.log('values', values);
+    let providerData = { ...values };
+
+    // Add the lat and lng if current place exists which happens only on create.
+    // When we are updating the provider, we won't have access to the place object since we don't need it.
+    // The only thing we care about for updates are the values in the editable form fields.
+    if (currentPlace) {
+      providerData = {
+        ...providerData,
+        latitude: currentPlace.geometry.location.lat(),
+        longitude: currentPlace.geometry.location.lng(),
+      };
+    }
     // Errors for this function should be handled in the parent component.
     // It makes it easier to customize error responses.
-    await onSubmit({
-      ...values,
-      latitude: currentPlace.geometry.location.lat(),
-      longitude: currentPlace.geometry.location.lng(),
-    });
+    await onSubmit(providerData);
   }
 
   return (

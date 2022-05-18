@@ -4,7 +4,7 @@ import { getSession } from 'next-auth/react';
 import { PrismaClient } from '@prisma/client';
 import { Stack, Button, Box, Container, Divider, Heading, Text, useToast } from '@chakra-ui/react';
 
-import { deleteAdminProviderById } from '~/utils/api';
+import { deleteAdminProviderById, updateAdminProviderById } from '~/utils/api';
 
 import AdminBackButton from '~/components/AdminBackButton';
 import AdminLayout from '~/components/AdminLayout';
@@ -26,12 +26,32 @@ function ProviderPage(props) {
     description: provider.description,
   };
 
+  function handleUpdateProvider(providerData) {
+    updateAdminProviderById(provider.id, providerData)
+      .then(() => {
+        toast({
+          title: 'Update Successful',
+          description: `${provider.name} successfully updated!`,
+          status: 'success',
+          isClosable: true,
+        });
+      })
+      .catch(() =>
+        toast({
+          title: 'Failed to Update Provider',
+          description: `${provider.name} failed to be updated. Please try again.`,
+          status: 'error',
+          isClosable: true,
+        })
+      );
+  }
+
   function handleDeleteProvider() {
     deleteAdminProviderById(provider.id)
       .then(() => {
         toast({
           title: 'Delete Successful',
-          description: `${provider.name} successfully deleted`,
+          description: `${provider.name} successfully deleted.`,
           status: 'success',
           isClosable: true,
         });
@@ -61,7 +81,7 @@ function ProviderPage(props) {
             showPlaceSearch={false}
             submitButtonText="Update Provider"
             initialValues={initialValues}
-            onSubmit={() => {}}
+            onSubmit={handleUpdateProvider}
           />
 
           <Stack bg="red.100" borderRadius="md" p={4} mt={16} spacing={4}>
@@ -116,7 +136,19 @@ export async function getServerSideProps({ req, params }) {
 
   const provider = await prisma.provider.findUnique({
     where: { id: parseInt(id, 10) },
+    include: {
+      serviceOnProvider: {
+        select: {
+          serviceId: true,
+        },
+      },
+    },
   });
+
+  // Restructure service types on the provider in order to match the way we want to use them in the provider form.
+  provider.serviceTypes = provider.serviceOnProvider.map((serviceType) => serviceType.serviceId);
+  // Delete the original serviceOnProvider property since it isn't needed because we have the serviceTypes array.
+  delete provider.serviceOnProvider;
 
   return { props: { provider: JSON.parse(JSON.stringify({ id, ...provider })) } };
 }
