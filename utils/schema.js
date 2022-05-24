@@ -16,3 +16,11 @@ export const providerUpdateSchema = Yup.object().shape({
   description: Yup.string(),
   serviceTypes: Yup.array().of(Yup.string()),
 });
+
+export const serviceSchema = Yup.object().shape({
+  id: Yup.string()
+    .length(3, 'Service ID must be 3 characters')
+    .matches(/[A-Z]/, 'Service ID must only contain capital letters')
+    .required('Service ID is required!'),
+  description: Yup.string().required('Service must have a description.'),
+});

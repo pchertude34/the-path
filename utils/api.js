@@ -34,8 +34,17 @@ export function getAdminServiceTypeList({ from, size, signal }) {
     .then((response) => response.data);
 }
 
+// ADMIN SERVICE FUNCTIONS
 export function getAdminAllServiceTypes() {
   return axios.get('/api/admin/services/all').then((response) => response.data);
+}
+
+export function getAdminServiceById(id) {
+  return axios.get(`/api/admin/services/${id}`).then((response) => response.data);
+}
+
+export function createAdminService(body) {
+  return axios.post('/api/admin/services', body).then((response) => response.data);
 }
 
 // ADMIN PROVIDER FUNCTIONS

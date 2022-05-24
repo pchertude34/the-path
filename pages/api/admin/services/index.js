@@ -2,7 +2,9 @@ import nc from 'next-connect';
 import { PrismaClient } from '@prisma/client';
 import withPermissions from '~/middleware/withAdmin';
 import onError from '~/middleware/onError';
+import { serviceSchema } from '~/utils/schema';
 import { query } from '~/utils/constants';
+import { ApiError } from '~/utils/error';
 
 const prisma = new PrismaClient();
 
@@ -54,6 +56,33 @@ const handler = nc({ onError })
     };
 
     res.json(response);
+  })
+  .post(async function createService(req, res) {
+    const { body } = req;
+
+    // validate the data in order to return any specific errors
+    const serviceData = await serviceSchema.validate(body, {
+      abortEarly: true,
+      stripUnknown: true,
+    });
+
+    // Check to see if a service with the sent id already exists. We don't want duplicates.
+    const existingService = await prisma.service.findUnique({
+      where: {
+        id: serviceData.id,
+      },
+    });
+
+    // Throw an error if a service with the same id exists.
+    if (existingService) {
+      throw new ApiError(`Service with id ${serviceData.id} already exists!`, 400);
+    }
+
+    const createdService = await prisma.service.create({
+      data: serviceData,
+    });
+
+    res.status(201).json(createdService);
   });
 
 export default handler;

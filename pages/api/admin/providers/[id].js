@@ -90,4 +90,5 @@ const handler = nc({ onError })
 
     res.send();
   });
+
 export default handler;

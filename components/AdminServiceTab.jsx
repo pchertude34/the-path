@@ -1,7 +1,9 @@
 import React from 'react';
+import NextLink from 'next/link';
 import { useQuery } from 'react-query';
-import { Box, Button, Flex, Heading, Input } from '@chakra-ui/react';
+import { Box, Button, Flex, Heading } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
+
 import usePagination from '../hooks/usePagination';
 import Pagination from './Pagination';
 import AdminServiceTable from './AdminServiceTable';
@@ -32,9 +34,18 @@ function AdminServiceTab() {
         <Heading as="h1" mb={4} align="left">
           Service Types
         </Heading>
-        <Button variant="outline" colorScheme="primary" bg="white" leftIcon={<AddIcon />} ml="auto">
-          Add Service Type
-        </Button>
+        <NextLink href="/admin/service/create" passHref>
+          <Button
+            as="a"
+            variant="outline"
+            colorScheme="primary"
+            bg="white"
+            leftIcon={<AddIcon />}
+            ml="auto"
+          >
+            Add Service Type
+          </Button>
+        </NextLink>
       </Flex>
       <Box overflow="scroll">
         <AdminServiceTable items={data?.items} isLoading={isLoading} mb={4} />

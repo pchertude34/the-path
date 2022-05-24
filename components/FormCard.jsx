@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Center, Heading, Text, Stack } from '@chakra-ui/react';
+import { Box, Center } from '@chakra-ui/react';
 
 function FormCard(props) {
   const { children } = props;
