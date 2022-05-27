@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Box, Table, Thead, Tbody, Tr, Th, Td, Text } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
+import { Table, Thead, Tbody, Tr, Th, Td, Text } from '@chakra-ui/react';
 import { query } from '../utils/constants';
 import LoadingRows from './LoadingRows';
 
@@ -8,7 +9,7 @@ function AdminServiceTable(props) {
   const { items, isLoading, ...rest } = props;
 
   return (
-    <Table variant="striped" {...rest}>
+    <Table id="services" {...rest}>
       <Thead>
         <Tr>
           <Th>ID</Th>
@@ -27,13 +28,24 @@ function AdminServiceTable(props) {
   );
 }
 
-AdminServiceTable.propTypes = {};
+AdminServiceTable.propTypes = {
+  isLoading: PropTypes.bool,
+  items: PropTypes.shape({
+    id: PropTypes.string,
+    description: PropTypes.string,
+  }),
+};
 
 function AdminServiceTableItem(props) {
   const { id, description } = props;
+  const router = useRouter();
 
   return (
-    <Tr>
+    <Tr
+      _hover={{ bg: 'primary.50' }}
+      cursor="pointer"
+      onClick={() => router.push(`/admin/service/${id}`)}
+    >
       <Td>
         <Text fontWeight="semibold">{id}</Text>
       </Td>
@@ -44,6 +56,9 @@ function AdminServiceTableItem(props) {
   );
 }
 
-AdminServiceTable.propTypes = {};
+AdminServiceTable.propTypes = {
+  id: PropTypes.string.isRequired,
+  decsription: PropTypes.string,
+};
 
 export default AdminServiceTable;

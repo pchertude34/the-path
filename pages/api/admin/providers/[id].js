@@ -1,5 +1,5 @@
 import nc from 'next-connect';
-import { PrismaClient, Prisma } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 import { providerUpdateSchema } from '~/utils/schema';
 import withPermissions from '~/middleware/withAdmin';
 import onError from '~/middleware/onError';

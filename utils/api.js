@@ -47,6 +47,14 @@ export function createAdminService(body) {
   return axios.post('/api/admin/services', body).then((response) => response.data);
 }
 
+export function updateAdminServiceById(id, body) {
+  return axios.put(`/api/admin/services/${id}`, body).then((response) => response.data);
+}
+
+export function deleteAdminServiceById(id) {
+  return axios.delete(`/api/admin/services/${id}`).then((response) => response.data);
+}
+
 // ADMIN PROVIDER FUNCTIONS
 export function createAdminProvider(body) {
   return axios.post('/api/admin/providers', body).then((response) => response.data);
@@ -57,7 +65,7 @@ export function getAdminProviderById(id) {
 }
 
 export function updateAdminProviderById(id, body) {
-  return axios.put(`/api/admin/providers/${id}`, body).then((response) => response.body);
+  return axios.put(`/api/admin/providers/${id}`, body).then((response) => response.data);
 }
 
 export function deleteAdminProviderById(id) {

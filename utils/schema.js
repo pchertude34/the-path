@@ -24,3 +24,8 @@ export const serviceSchema = Yup.object().shape({
     .required('Service ID is required!'),
   description: Yup.string().required('Service must have a description.'),
 });
+
+// This schema is used to validate an update to a service.
+export const serviceUpdateSchema = Yup.object().shape({
+  description: Yup.string().required('Service must have a description.'),
+});

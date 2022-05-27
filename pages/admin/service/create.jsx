@@ -4,6 +4,7 @@ import { Box, Container, Heading, useToast } from '@chakra-ui/react';
 import { createAdminService } from '~/utils/api';
 import AdminBackButton from '~/components/AdminBackButton';
 import AdminServiceForm from '~/components/AdminServiceForm';
+import AdminLayout from '~/components/AdminLayout';
 
 function CreateServicePage() {
   const toast = useToast();
@@ -47,4 +48,5 @@ function CreateServicePage() {
   );
 }
 
+CreateServicePage.layout = AdminLayout;
 export default CreateServicePage;

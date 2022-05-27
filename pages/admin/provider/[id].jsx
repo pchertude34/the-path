@@ -18,6 +18,7 @@ function ProviderPage(props) {
   const router = useRouter();
   const toast = useToast();
 
+  // The initial values for the provider form component
   const initialValues = {
     placeId: provider.placeId,
     name: provider.name,
@@ -39,7 +40,7 @@ function ProviderPage(props) {
       .catch(() =>
         toast({
           title: 'Failed to Update Provider',
-          description: `${provider.name} failed to be updated. Please try again.`,
+          description: `${provider.name} failed to be updated. Please try again later.`,
           status: 'error',
           isClosable: true,
         })
