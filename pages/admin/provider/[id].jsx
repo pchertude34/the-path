@@ -37,10 +37,12 @@ function ProviderPage(props) {
           isClosable: true,
         });
       })
-      .catch(() =>
+      .catch((error) =>
         toast({
           title: 'Failed to Update Provider',
-          description: `${provider.name} failed to be updated. Please try again later.`,
+          description:
+            error.response?.data ||
+            `${provider.name} failed to be updated. Please try again later.`,
           status: 'error',
           isClosable: true,
         })

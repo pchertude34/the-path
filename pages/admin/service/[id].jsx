@@ -38,7 +38,7 @@ function ServicePage(props) {
         toast({
           title: 'Failed to Update Service',
           description:
-            error.response?.message || `${service.id} failed to udpate. Please try again later.`,
+            error.response?.data || `${service.id} failed to udpate. Please try again later.`,
           status: 'error',
           isClosable: true,
         })
@@ -62,8 +62,7 @@ function ServicePage(props) {
         toast({
           title: 'Failed to Delete Service',
           description:
-            error.response?.message ||
-            `${service.id} failed to be deleted. Please try again later.`,
+            error.response?.data || `${service.id} failed to be deleted. Please try again later.`,
           status: 'error',
           isClosable: true,
         })

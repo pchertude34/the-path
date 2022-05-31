@@ -26,10 +26,12 @@ function CreateProviderPage() {
           isClosable: true,
         })
       )
-      .catch(() =>
+      .catch((error) =>
         toast({
           title: 'Failed to Add Provider',
-          description: 'Provider failed to create, please fix any errors and try again.',
+          description:
+            error.response?.data ||
+            'Provider failed to create, please fix any errors and try again.',
           status: 'error',
           isClosable: true,
         })
