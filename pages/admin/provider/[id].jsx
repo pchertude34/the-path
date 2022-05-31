@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import { getSession } from 'next-auth/react';
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '~/utils/database';
 import { Stack, Button, Box, Container, Divider, Heading, Text, useToast } from '@chakra-ui/react';
 
 import { deleteAdminProviderById, updateAdminProviderById } from '~/utils/api';
@@ -58,7 +58,7 @@ function ProviderPage(props) {
         });
 
         // Navigate the user back to the Admin Provider List tab
-        router.replace({ pathname: '/admin', query: { tab: 'provier' } });
+        router.replace({ pathname: '/admin', query: { tab: 'providers' } });
       })
       .catch(() =>
         toast({
@@ -123,7 +123,6 @@ function ProviderPage(props) {
 
 export async function getServerSideProps({ req, params }) {
   const session = await getSession({ req });
-  const prisma = new PrismaClient();
   const { id } = params;
 
   if (!session) {

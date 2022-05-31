@@ -4,7 +4,6 @@ import { getSession } from 'next-auth/react';
 import AdminLayout from '../../components/AdminLayout';
 import AdminProviderTab from '../../components/AdminProviderTab';
 import AdminServiceTab from '../../components/AdminServiceTab';
-
 function AdminHome() {
   return (
     <Box mt={4}>

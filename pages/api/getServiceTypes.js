@@ -1,6 +1,5 @@
-import { PrismaClient, Prisma } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { Prisma } from '@prisma/client';
+import { prisma } from '~/utils/database';
 
 export default async function handler(req, res) {
   const { lat, lng, distance = 10000 } = req.query;

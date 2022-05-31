@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import { getSession } from 'next-auth/react';
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '~/utils/database';
 import { Box, Button, Container, Divider, Heading, Stack, Text, useToast } from '@chakra-ui/react';
 
 import { updateAdminServiceById, deleteAdminServiceById } from '~/utils/api';
@@ -122,7 +122,6 @@ function ServicePage(props) {
 
 export async function getServerSideProps({ req, params }) {
   const session = await getSession({ req });
-  const prisma = new PrismaClient();
   const { id } = params;
 
   if (!session) {

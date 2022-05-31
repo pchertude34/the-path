@@ -1,12 +1,10 @@
 import nc from 'next-connect';
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '~/utils/database';
 import withPermissions from '~/middleware/withAdmin';
 import onError from '~/middleware/onError';
 import { serviceSchema } from '~/utils/schema';
 import { query } from '~/utils/constants';
 import { ApiError } from '~/utils/error';
-
-const prisma = new PrismaClient();
 
 const handler = nc({ onError })
   .use(withPermissions())
