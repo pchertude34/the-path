@@ -16,19 +16,19 @@ export function getServiceList({ distance, latitude, longitude, serviceType }) {
     .then((response) => response.data);
 }
 
-export function getAdminProviderList({ from, size, signal }) {
+export function getAdminProviderList({ from, size, q, signal }) {
   return axios
     .get('/api/admin/providers', {
-      params: { from, size },
+      params: { from, size, q },
       signal,
     })
     .then((response) => response.data);
 }
 
-export function getAdminServiceTypeList({ from, size, signal }) {
+export function getAdminServiceTypeList({ from, size, q, signal }) {
   return axios
     .get('/api/admin/services', {
-      params: { from, size },
+      params: { from, size, q },
       signal,
     })
     .then((response) => response.data);

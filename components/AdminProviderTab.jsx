@@ -1,29 +1,52 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import NextLink from 'next/link';
 import { useQuery } from 'react-query';
-import { Box, Button, Flex, Heading, Input } from '@chakra-ui/react';
+import { Box, Button, Flex, Heading } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
+
 import usePagination from '../hooks/usePagination';
 import AdminProviderTable from './AdminProviderTable';
+import AdminSearchBar from './AdminSearchBar';
 import Pagination from './Pagination';
+
 import { getAdminProviderList } from '../utils/api';
 import { query } from '../utils/constants';
 
 function AdminProviderTab() {
-  const { currentPage, updatePage, totalItems, setTotalItems, from } = usePagination({
+  const [searchValue, setSearchValue] = useState('');
+  const { currentPage, updatePage, totalItems, setTotalItems, from, setFrom } = usePagination({
     size: query.DEFAULT_SIZE,
   });
 
   const { isLoading, isError, isFetching, data, error } = useQuery(
-    ['admin-providers', from],
+    ['admin-providers', from, searchValue],
     // Signal is used to cancel requests on page change
     // https://react-query.tanstack.com/guides/query-cancellation#using-axios
     async ({ signal }) => {
-      const data = await getAdminProviderList({ from, size: query.DEFAULT_SIZE, signal });
+      const data = await getAdminProviderList({
+        from,
+        size: query.DEFAULT_SIZE,
+        q: searchValue,
+        signal,
+      });
       setTotalItems(data.total);
       return data;
     },
     { keepPreviousData: true }
+  );
+
+  /**
+   * Handler for the search input.
+   * @param {string} value the search value
+   */
+  const handleSearchChange = useCallback(
+    (value) => {
+      setSearchValue(value);
+      // Reset the "from" value for the provider query anytime the search value changes.
+      // This will bring the user back to "page 1" with the new search term in effect.
+      setFrom(0);
+    },
+    [setFrom]
   );
 
   return (
@@ -46,7 +69,7 @@ function AdminProviderTab() {
         </NextLink>
       </Flex>
       <Flex mb={4}>
-        <Input placeholder="Search by name or address" maxW="400px" bg="white" />
+        <AdminSearchBar onChange={handleSearchChange} />
       </Flex>
       <Box overflow="scroll">
         <AdminProviderTable items={data?.items} isLoading={isLoading} mb={4} />

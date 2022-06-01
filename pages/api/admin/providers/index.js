@@ -25,9 +25,17 @@ const handler = nc({ onError })
     }
 
     // Add the search term if the user sent it
+    // Right now, we are just searching by name and address.
     if (q) {
       params.where = {
-        OR: [{}],
+        OR: [
+          {
+            name: { contains: q },
+          },
+          {
+            address: { contains: q },
+          },
+        ],
       };
     }
 
@@ -44,7 +52,11 @@ const handler = nc({ onError })
       },
     });
 
-    const providerCountPromise = prisma.provider.count();
+    // Add the search term to the count if the user is passing it in.
+    // This way we only get the count of providers that match the search term.
+    const providerCountPromise = prisma.provider.count({
+      where: { ...params.where },
+    });
 
     // Run the queries in parallel because they are independent of eachother.
     const [providers, providerCount] = await Promise.all([providersPromise, providerCountPromise]);

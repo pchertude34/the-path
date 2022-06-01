@@ -28,7 +28,14 @@ const handler = nc({ onError })
     if (q) {
       params.where = {
         // Placeholder for the search term
-        OR: [{}],
+        OR: [
+          {
+            id: { contains: q },
+          },
+          {
+            description: { contains: q },
+          },
+        ],
       };
     }
 
@@ -38,7 +45,11 @@ const handler = nc({ onError })
       ...params,
     });
 
-    const serviceTypesCountPromise = prisma.service.count();
+    // Add the search term to the count if the user is passing it in.
+    // This way we only get the count of services that match the search term.
+    const serviceTypesCountPromise = prisma.service.count({
+      where: { ...params.where },
+    });
 
     // Run the queries in parallel because they are independent of eachother
     const [serviceTypes, serviceTypesCount] = await Promise.all([
