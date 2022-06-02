@@ -30,10 +30,12 @@ function AdminServiceTable(props) {
 
 AdminServiceTable.propTypes = {
   isLoading: PropTypes.bool,
-  items: PropTypes.shape({
-    id: PropTypes.string,
-    description: PropTypes.string,
-  }),
+  items: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string,
+      description: PropTypes.string,
+    })
+  ),
 };
 
 function AdminServiceTableItem(props) {
@@ -56,7 +58,7 @@ function AdminServiceTableItem(props) {
   );
 }
 
-AdminServiceTable.propTypes = {
+AdminServiceTableItem.propTypes = {
   id: PropTypes.string.isRequired,
   decsription: PropTypes.string,
 };

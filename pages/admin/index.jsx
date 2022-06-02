@@ -7,10 +7,11 @@ import AdminServiceTab from '../../components/AdminServiceTab';
 function AdminHome() {
   return (
     <Box mt={4}>
-      <Tabs variant="solid-rounded" colorScheme="primary" align="center">
+      {/* We set ID here because chakra will produce some weird id mismatch error otherwise: https://github.com/chakra-ui/chakra-ui/issues/4328 */}
+      <Tabs id="service-provider-tabs" variant="solid-rounded" colorScheme="primary" align="center">
         <TabList>
-          <Tab>Providers</Tab>
-          <Tab>Service Types</Tab>
+          <Tab id="providers-tab">Providers</Tab>
+          <Tab id="services-tab">Service Types</Tab>
         </TabList>
         <TabPanels>
           <TabPanel p={{ base: 0, md: 4 }}>
