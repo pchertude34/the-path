@@ -2,6 +2,8 @@ import nc from 'next-connect';
 import { Prisma } from '@prisma/client';
 import withPermissions from '~/middleware/withAdmin';
 import onError from '~/middleware/onError';
+
+import { prisma } from '~/utils/database';
 import { query } from '~/utils/constants';
 import { providerSchema } from '~/utils/schema';
 import { ApiError } from '~/utils/error';
