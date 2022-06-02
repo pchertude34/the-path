@@ -81,7 +81,9 @@ function AdminProviderForm(props) {
 
   return (
     <Formik
-      initialValues={initialValues}
+      // Combine passed in initial values with default initial values.
+      // This will fill any gaps that the passed in initial values might have.
+      initialValues={{ ...INITIAL_VALUES, ...initialValues }}
       onSubmit={handleSubmit}
       validationSchema={VALIDATION_SCHEMA}
       validateOnBlur={false}
