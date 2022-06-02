@@ -2,6 +2,7 @@ import React from 'react';
 import Head from 'next/head';
 import { Container } from '@chakra-ui/react';
 import AdminNavbar from './AdminNavbar';
+import Footer from './Footer';
 
 function AdminLayout({ children }) {
   return (
@@ -12,6 +13,7 @@ function AdminLayout({ children }) {
       </Head>
       <AdminNavbar />
       <Container maxW="7xl">{children}</Container>
+      <Footer />
     </React.Fragment>
   );
 }

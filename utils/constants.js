@@ -9,3 +9,18 @@ export const query = {
   DESC: 'desc',
   DEFAULT_DIR: 'desc',
 };
+
+export const NAV_ITEMS = [
+  {
+    label: 'Home',
+    href: '/',
+  },
+  {
+    label: 'Contact',
+    href: '#',
+  },
+  {
+    label: 'About',
+    href: '#',
+  },
+];

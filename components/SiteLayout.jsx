@@ -2,6 +2,7 @@ import React from 'react';
 import Head from 'next/head';
 import { Container } from '@chakra-ui/react';
 import Navbar from './Navbar';
+import Footer from './Footer';
 
 function SiteLayout({ children }) {
   return (
@@ -13,6 +14,7 @@ function SiteLayout({ children }) {
       </Head>
       <Navbar />
       <Container maxW="7xl">{children}</Container>
+      <Footer />
     </React.Fragment>
   );
 }
