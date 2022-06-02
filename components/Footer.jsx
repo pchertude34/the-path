@@ -4,9 +4,9 @@ import { Box, Container, Stack, Text, Link } from '@chakra-ui/react';
 
 import { NAV_ITEMS } from '../utils/constants';
 
-function Footer() {
+function Footer(props) {
   return (
-    <Box bg="gray.800" color="white">
+    <Box bg="gray.800" color="white" {...props}>
       <Container
         as={Stack}
         maxW="6xl"

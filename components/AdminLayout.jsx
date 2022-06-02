@@ -13,7 +13,7 @@ function AdminLayout({ children }) {
       </Head>
       <AdminNavbar />
       <Container maxW="7xl">{children}</Container>
-      <Footer />
+      <Footer mt={4} />
     </React.Fragment>
   );
 }
