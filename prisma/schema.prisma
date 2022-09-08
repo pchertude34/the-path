@@ -10,25 +10,24 @@ datasource db {
 
 model Provider {
   id                Int                  @id @default(autoincrement())
-  placeId           String?              @map("place_id") @db.VarChar(1042)
+  placeId           String               @map("place_id") @db.VarChar(1042)
   name              String               @db.VarChar(256)
   location          Unsupported("point")
-  address           String?              @db.VarChar(256)
-  undisclosed       Boolean?             @default(false)
-  spanish           Boolean?             @default(false)
-  street            String?              @db.VarChar(256)
-  city              String?              @db.VarChar(256)
-  zip               String?              @db.VarChar(16)
+  undisclosed       Boolean              @default(false)
+  // spanish           Boolean?             @default(false)
+  address           String               @db.VarChar(256)
+  city              String               @db.VarChar(256)
+  state             String
   website           String?              @db.VarChar(126)
   email             String?              @db.VarChar(256)
-  description       String?              @db.VarChar(256)
+  description       String?              @db.Text()
   updatedAt         DateTime?            @default(now()) @map("updated_at") @db.DateTime(0)
   serviceOnProvider ServiceOnProvider[]
 }
 
 model Service {
   id                String              @id @db.VarChar(8)
-  description       String?             @db.VarChar(256)
+  description       String              @unique() @db.VarChar(128)
   serviceOnProvider ServiceOnProvider[]
 }
 

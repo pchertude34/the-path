@@ -11,7 +11,7 @@ function AdminLayout({ children }) {
         <title>The Path</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Flex direction="column">
+      <Flex direction="column" minH="100vh">
         <AdminNavbar />
         <Container maxW="7xl" mb={8}>
           {children}

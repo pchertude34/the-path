@@ -34,6 +34,7 @@ function PlaceSearch(props) {
     // changes the text.
     autocomplete.addListener('place_changed', () => {
       const place = autocomplete.getPlace();
+      console.log('place', place);
       onPlaceChange(place);
     });
   }, []);

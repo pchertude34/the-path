@@ -40,7 +40,7 @@ fs.createReadStream(filePath)
           description,
         ] = provider;
 
-        const googlePlace = await axios.get(
+        const googlePlaceIds = await axios.get(
           `https://maps.googleapis.com/maps/api/place/findplacefromtext/json`,
           {
             params: {
@@ -50,21 +50,43 @@ fs.createReadStream(filePath)
             },
           }
         );
-        const placeId = googlePlace.data?.candidates[0]?.place_id;
 
-        const location = `ST_GeomFromText('POINT(${lat} ${long})', 4326)`;
-        var query1 = `INSERT INTO \`the-path\`.Provider VALUES (${id}, "${placeId}", "${name}", ${location}, ${undisclosed}, ${spanish}, "${street}", "${city}", "${zip}", "${website}", "${email}", "${description}", ${null});`;
-        await prisma.$executeRawUnsafe(query1);
+        if (googlePlaceIds.data?.candidates[0]) {
+          const placeId = googlePlaceIds.data.candidates[0].place_id;
+          const googlePlaceResponse = await axios.get(
+            'https://maps.googleapis.com/maps/api/place/details/json',
+            {
+              params: {
+                place_id: placeId,
+                key: process.env.GOOGLE_MAPS_API_KEY,
+              },
+            }
+          );
 
-        services.forEach(async (service) => {
-          try {
-            var query2 = `INSERT INTO \`the-path\`.ServiceOnProvider VALUES (${id}, "${service}")`;
-            await prisma.$executeRawUnsafe(query2);
-          } catch (e) {
-            console.log('ERROR WITH ADDING SERVICE LINK');
-            console.log(query2);
-          }
-        });
+          // If we can't find the place, just move on to the next provider and try again.
+          if (!googlePlaceResponse.data) continue;
+
+          const { address, city, state } = buildPlaceAddress(googlePlaceResponse.data.result);
+          const {
+            geometry: {
+              location: { lat, lng },
+            },
+          } = googlePlaceResponse.data.result;
+
+          const location = `ST_GeomFromText('POINT(${lat} ${lng})', 4326)`;
+          var query1 = `INSERT INTO \`the-path\`.Provider VALUES (${id}, "${placeId}", "${name}", ${location}, ${undisclosed}, "${address}", "${city}", "${state}", "${website}", "${email}", "${description}", ${null});`;
+          await prisma.$executeRawUnsafe(query1);
+
+          services.forEach(async (service) => {
+            try {
+              var query2 = `INSERT INTO \`the-path\`.ServiceOnProvider VALUES (${id}, "${service}")`;
+              await prisma.$executeRawUnsafe(query2);
+            } catch (e) {
+              console.log('ERROR WITH ADDING SERVICE LINK');
+              console.log(query2);
+            }
+          });
+        }
       } catch (e) {
         console.log(`Error adding row ${provider[0]}`);
         console.log(`query`, query1);
@@ -72,3 +94,42 @@ fs.createReadStream(filePath)
       }
     }
   });
+
+function buildPlaceAddress(place) {
+  let address1 = '';
+  let city = '';
+  let state = '';
+  let postcode = '';
+  let longState = '';
+
+  if (!place.address_components) return;
+
+  for (const component of place.address_components) {
+    const componentType = component.types[0];
+
+    switch (componentType) {
+      case 'street_number':
+        address1 = `${component.long_name} ${address1}`;
+        break;
+      case 'route':
+        address1 += component.short_name;
+        break;
+      case 'postal_code':
+        postcode = `${component.long_name}${postcode}`;
+        break;
+      case 'postal_code_suffix':
+        postcode = `${postcode}-${component.long_name}`;
+        break;
+      case 'locality':
+        city = component.long_name;
+        break;
+      case 'administrative_area_level_1':
+        state = component.short_name;
+        longState = component.long_name;
+    }
+  }
+
+  const address = `${address1}, ${city}, ${state} ${postcode}`;
+
+  return { address, city, state: longState };
+}
