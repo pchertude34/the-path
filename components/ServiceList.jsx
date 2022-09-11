@@ -127,7 +127,11 @@ function ServiceList(props) {
                     // but what we really need is the google places service data that comes from the ServiceListItem
                     // that's why we are doing this weird spread thing.
                     onClick={(googlePlace) =>
-                      handleServiceSelect({ ...googlePlace, distance: service.distance })
+                      handleServiceSelect({
+                        ...googlePlace,
+                        distance: service.distance,
+                        description: service.description,
+                      })
                     }
                     map={map}
                     {...service}

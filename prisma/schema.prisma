@@ -10,7 +10,7 @@ datasource db {
 
 model Provider {
   id                Int                  @id @default(autoincrement())
-  placeId           String               @map("place_id") @db.VarChar(1042)
+  placeId           String               @unique @map("place_id") @db.VarChar(256)
   name              String               @db.VarChar(256)
   location          Unsupported("point")
   undisclosed       Boolean              @default(false)

@@ -4,6 +4,7 @@ import {
   Box,
   Button,
   Flex,
+  Link,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -13,7 +14,9 @@ import {
   ModalCloseButton,
   Text,
   Heading,
+  VStack,
 } from '@chakra-ui/react';
+import { ExternalLinkIcon, PhoneIcon } from '@chakra-ui/icons';
 import BusinessStatusLabel from './BusinessStatusLabel';
 import { convertMetersToMiles } from '../utils/utils';
 
@@ -32,8 +35,15 @@ function ServiceDetailModal(props) {
   // make sure we use optional chaining any time we reference a value on the service prop, and
   // we need defaults any time we destructure the service object.
   const { isOpen, onClose, service = {}, latitude, longitude } = props;
-  const { opening_hours: { weekday_text, isOpen: isLocationOpen } = {} } = service;
+  const {
+    opening_hours: { weekday_text, isOpen: isLocationOpen } = {},
+    description,
+    formatted_phone_number,
+    website,
+  } = service;
   const dayRef = useRef(getCurrentDay());
+
+  console.log('props', props);
 
   function generateNavigationLink() {
     let navLink;
@@ -59,11 +69,7 @@ function ServiceDetailModal(props) {
               {convertMetersToMiles(service.distance)} miles
             </Text>
           </Flex>
-          <Text mb={8}>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor nostrum ipsum omnis
-            veniam placeat explicabo tempora aspernatur nihil provident ratione, commodi, earum
-            suscipit adipisci laborum obcaecati vel. Illum, fuga odit!
-          </Text>
+          <Text mb={8}>{description}</Text>
           {weekday_text && (
             <Box>
               <Flex align="center">
@@ -82,6 +88,33 @@ function ServiceDetailModal(props) {
                 </Text>
               ))}
             </Box>
+          )}
+
+          {/* Render the contact information block if there is a website or phone number */}
+          {(formatted_phone_number || website) && (
+            <VStack mt={8} spacing={1} align="start">
+              <Heading as="h2" size="md">
+                Contact
+              </Heading>
+
+              {formatted_phone_number && (
+                <Flex align="center">
+                  <PhoneIcon mr={2} />
+                  <Link href={`tel:${formatted_phone_number}`} color="blue.600">
+                    {formatted_phone_number}
+                  </Link>
+                </Flex>
+              )}
+
+              {website && (
+                <Flex align="center">
+                  <ExternalLinkIcon mr={2} />
+                  <Link href={website} target="_blank" rel="noreferrer noopener" color="blue.600">
+                    {website}
+                  </Link>
+                </Flex>
+              )}
+            </VStack>
           )}
         </ModalBody>
         <ModalFooter>

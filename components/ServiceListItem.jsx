@@ -22,6 +22,7 @@ function ServiceListItem(props) {
         fields: [
           'name',
           'formatted_phone_number',
+          'website',
           'address_components',
           'url',
           'geometry',
