@@ -43,8 +43,6 @@ function ServiceDetailModal(props) {
   } = service;
   const dayRef = useRef(getCurrentDay());
 
-  console.log('props', props);
-
   function generateNavigationLink() {
     let navLink;
 

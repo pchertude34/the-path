@@ -9,7 +9,6 @@ export const initialState = {
 };
 
 export function serviceDetailReducer(state, action) {
-  console.log(`state`, state);
   switch (action.type) {
     case types.ADD_SERVICE:
       const updatedServiceMap = { ...state.serviceMap };
